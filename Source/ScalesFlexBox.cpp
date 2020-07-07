@@ -36,7 +36,7 @@ ScalesFlexBox::ScalesFlexBox ()
     //[UserPreSize]
     for (int i = 0; i <= comboBoxIndex::MAX; i++)
     {
-        flexBox.items.add(FlexItem(100, 100).withMargin(10));
+        flexBox.items.add(FlexItem(100, 30).withMargin(10));
         auto &flexItem = flexBox.items.getReference(flexBox.items.size() - 1);
         auto *comboBox = new ComboBox();
         comboBoxes.add(comboBox);
@@ -46,8 +46,8 @@ ScalesFlexBox::ScalesFlexBox ()
     
     comboBoxes[comboBoxIndex::NOTE] -> setText("test");
     
-    //comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.allOptions, 0);
-    //comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(0);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
