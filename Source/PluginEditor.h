@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "ScalesFlexBox.h"
 
 //==============================================================================
 /**
@@ -30,6 +31,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     ScalesAudioProcessor& processor;
+    ScalesFlexBox flexBox;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScalesAudioProcessorEditor)
 };

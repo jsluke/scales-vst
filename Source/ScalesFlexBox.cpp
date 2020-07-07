@@ -34,7 +34,8 @@ ScalesFlexBox::ScalesFlexBox ()
 
 
     //[UserPreSize]
-    for (int i = 0; i <= comboBoxIndex::MAX; i++) {
+    for (int i = 0; i <= comboBoxIndex::MAX; i++)
+    {
         flexBox.items.add(FlexItem(100, 100).withMargin(10));
         auto &flexItem = flexBox.items.getReference(flexBox.items.size() - 1);
         auto *comboBox = new ComboBox();
@@ -45,6 +46,9 @@ ScalesFlexBox::ScalesFlexBox ()
     
     comboBoxes[comboBoxIndex::NOTE] -> setText("test");
     
+    //comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.allOptions, 0);
+    //comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(0);
+
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
     flexBox.justifyContent = FlexBox::JustifyContent::flexStart;
@@ -67,6 +71,7 @@ ScalesFlexBox::~ScalesFlexBox()
 
 
     //[Destructor]. You can add your own custom destruction code here..
+    
     //[/Destructor]
 }
 

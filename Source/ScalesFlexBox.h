@@ -56,6 +56,7 @@ private:
     OwnedArray<ComboBox> comboBoxes;
     
     enum comboBoxIndex {SCALE, NOTE, OPERATION, CONTROL_CHANNEL, MAX = CONTROL_CHANNEL};
+    ControlChannelInfo controlChannelInfo;
     //[/UserVariables]
 
     //==============================================================================
