@@ -34,6 +34,22 @@ ScalesFlexBox::ScalesFlexBox ()
 
 
     //[UserPreSize]
+    for (int i = 0; i <= comboBoxIndex::MAX; i++) {
+        flexBox.items.add(FlexItem(100, 100).withMargin(10));
+        auto &flexItem = flexBox.items.getReference(flexBox.items.size() - 1);
+        auto *comboBox = new ComboBox();
+        comboBoxes.add(comboBox);
+        flexItem.associatedComponent = comboBox;
+        addAndMakeVisible(comboBox);
+    }
+    
+    comboBoxes[comboBoxIndex::NOTE] -> setText("test");
+    
+    flexBox.alignContent = FlexBox::AlignContent::flexStart;
+    flexBox.flexDirection = FlexBox::Direction::row;
+    flexBox.justifyContent = FlexBox::JustifyContent::flexStart;
+    flexBox.alignItems = FlexBox::AlignItems::flexStart;
+    flexBox.flexWrap = FlexBox::Wrap::wrap;
     //[/UserPreSize]
 
     setSize (600, 400);
@@ -72,6 +88,7 @@ void ScalesFlexBox::resized()
     //[/UserPreResize]
 
     //[UserResized] Add your own custom resize handling here..
+    flexBox.performLayout(getLocalBounds());
     //[/UserResized]
 }
 

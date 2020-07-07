@@ -52,6 +52,10 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    FlexBox flexBox;
+    OwnedArray<ComboBox> comboBoxes;
+    
+    enum comboBoxIndex {SCALE, NOTE, OPERATION, CONTROL_CHANNEL, MAX = CONTROL_CHANNEL};
     //[/UserVariables]
 
     //==============================================================================
