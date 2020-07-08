@@ -8,6 +8,7 @@
               headerPath="../../Source">
   <MAINGROUP id="UikYWG" name="Scales">
     <GROUP id="{66881EAD-FDE3-3B6D-6EF8-49CB0999E9D0}" name="Source">
+      <FILE id="vAfgIv" name="ScaleInfo.h" compile="0" resource="0" file="Source/ScaleInfo.h"/>
       <FILE id="lC8XJT" name="NoteInfo.h" compile="0" resource="0" file="Source/NoteInfo.h"/>
       <FILE id="RXbSiv" name="ControlChannelInfo.h" compile="0" resource="0"
             file="Source/ControlChannelInfo.h"/>

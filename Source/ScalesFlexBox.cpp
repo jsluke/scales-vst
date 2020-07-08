@@ -44,6 +44,9 @@ ScalesFlexBox::ScalesFlexBox ()
         addAndMakeVisible(comboBox);
     }
     
+    comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::SCALE] -> setSelectedId(1);
+    
     comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::NOTE] -> setSelectedId(1);
     

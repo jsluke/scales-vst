@@ -23,6 +23,7 @@
 #include <JuceHeader.h>
 #include "ControlChannelInfo.h"
 #include "NoteInfo.h"
+#include "ScaleInfo.h"
 //[/Headers]
 
 
@@ -59,6 +60,7 @@ private:
     enum comboBoxIndex {SCALE, NOTE, OPERATION, CONTROL_CHANNEL, MAX = CONTROL_CHANNEL};
     ControlChannelInfo controlChannelInfo;
     NoteInfo noteInfo;
+    ScaleInfo scaleInfo;
     //[/UserVariables]
 
     //==============================================================================
