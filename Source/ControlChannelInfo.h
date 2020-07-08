@@ -12,7 +12,8 @@
 
 #include <array>
 
-struct ControlChannel {
+struct ControlChannel
+{
     bool isChannel;
     int channelID;
     String localizedString;
@@ -21,7 +22,8 @@ struct ControlChannel {
         isChannel(isChannel), channelID(channelID), localizedString(localizedString) {}
 };
 
-class ControlChannelInfo {
+class ControlChannelInfo
+{
     
 public:
     ControlChannelInfo() {

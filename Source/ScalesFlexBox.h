@@ -22,6 +22,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
 #include "ControlChannelInfo.h"
+#include "NoteInfo.h"
 //[/Headers]
 
 
@@ -57,6 +58,7 @@ private:
     
     enum comboBoxIndex {SCALE, NOTE, OPERATION, CONTROL_CHANNEL, MAX = CONTROL_CHANNEL};
     ControlChannelInfo controlChannelInfo;
+    NoteInfo noteInfo;
     //[/UserVariables]
 
     //==============================================================================
