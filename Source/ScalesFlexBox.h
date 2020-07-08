@@ -24,6 +24,7 @@
 #include "ControlChannelInfo.h"
 #include "NoteInfo.h"
 #include "ScaleInfo.h"
+#include "OperationInfo.h"
 //[/Headers]
 
 
@@ -61,6 +62,7 @@ private:
     ControlChannelInfo controlChannelInfo;
     NoteInfo noteInfo;
     ScaleInfo scaleInfo;
+    OperationInfo operationInfo;
     //[/UserVariables]
 
     //==============================================================================
