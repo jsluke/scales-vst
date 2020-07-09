@@ -10,9 +10,9 @@
 
 #include "NoteInfo.h"
 
-Identifier NoteInfo::noteTreeID ("NoteTree");
-ValueTree NoteInfo::noteTree (noteTreeID);
-Identifier NoteInfo::noteID ("NoteID");
+const Identifier NoteInfo::noteTreeID ("NoteTree");
+const ValueTree NoteInfo::noteTree (noteTreeID);
+const Identifier NoteInfo::noteID ("NoteID");
 
 const String NoteInfo::notes[NoteInfo::NUM_NOTES] = {
     "C",

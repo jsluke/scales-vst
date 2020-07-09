@@ -12,6 +12,10 @@
 
 const Operation OperationInfo::DROP = Operation(0, TRANS("Drop"));
 
+const Identifier OperationInfo::operationTreeID ("OperationTree");
+const ValueTree OperationInfo::operationTree (operationTreeID);
+const Identifier OperationInfo::operationID ("OperationID");
+
 OperationInfo::OperationInfo()
 {
     operationOptions[DROP.order] = DROP;

@@ -10,6 +10,10 @@
 
 #include "ControlChannelInfo.h"
 
+const Identifier ControlChannelInfo::channelTreeID ("ChannelTree");
+const ValueTree ControlChannelInfo::channelTree (channelTreeID);
+const Identifier ControlChannelInfo::channelID ("ChannelID");
+
 ControlChannelInfo::ControlChannelInfo() {
     channelOptions[0] = ControlChannel(false, 0, TRANS("None"));
     // there are 16 MIDI channels per port

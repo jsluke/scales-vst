@@ -26,6 +26,9 @@ class OperationInfo
 {
 public:
     static const Operation DROP;
+    static const Identifier operationTreeID;
+    static const ValueTree operationTree;
+    static const Identifier operationID;
     
     OperationInfo();
     

@@ -28,6 +28,10 @@ public:
     static const Scale MAJOR;
     static const Scale MINOR;
     
+    static const Identifier scaleTreeID;
+    static const ValueTree scaleTree;
+    static const Identifier scaleID;
+    
     ScaleInfo();
     
     StringArray getStringArray();

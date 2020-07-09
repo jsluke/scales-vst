@@ -13,6 +13,10 @@
 const Scale ScaleInfo::MAJOR = Scale(0, TRANS("Major"));
 const Scale ScaleInfo::MINOR = Scale(1, TRANS("Minor"));
 
+const Identifier ScaleInfo::scaleTreeID ("ScaleTree");
+const ValueTree ScaleInfo::scaleTree (scaleTreeID);
+const Identifier ScaleInfo::scaleID ("ScaleID");
+
 ScaleInfo::ScaleInfo()
 {
     scaleOptions[MAJOR.order] = MAJOR;

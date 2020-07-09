@@ -27,6 +27,10 @@ class ControlChannelInfo
 {
     
 public:
+    static const Identifier channelTreeID;
+    static const ValueTree channelTree;
+    static const Identifier channelID;
+    
     ControlChannelInfo();
     
     ControlChannel getChannel(int optionID);
