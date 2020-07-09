@@ -14,10 +14,12 @@
 
 #include <unordered_set>
 #include <unordered_map>
+
+#include "NoteInfo.h"
 //==============================================================================
 /**
 */
-class ScalesAudioProcessor  : public AudioProcessor
+class ScalesAudioProcessor  : public AudioProcessor, public ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -65,28 +67,21 @@ private:
     void generateNoteSets();
     bool noteIsInScale(int note);
     
+    void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
+    
     //==============================================================================
     static const int NUM_NOTES = 12;
     enum scaleType {MAJOR, MINOR, SCALE_TYPE_MAX = MINOR};
-    const String notes[NUM_NOTES] = {
-        "C",
-        "C#",
-        "D",
-        "D#",
-        "E",
-        "F",
-        "F#",
-        "G",
-        "G#",
-        "A",
-        "A#",
-        "B"
-    };
     bool noteSets[SCALE_TYPE_MAX+1][NUM_NOTES][NUM_NOTES] = {0};
     int currentScaleNote = 0;
     int currentScale = scaleType::MAJOR;
-    int controlChannel = 1;
+    int controlChannel = -1;
     int majorOctave = 3;
     int minorOctave = 4;
+    
+    ValueTree controlChannelTree;
+    ValueTree noteTree;
+    ValueTree scaleTree;
+    ValueTree operationTree;
 };
 	

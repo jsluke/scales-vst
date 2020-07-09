@@ -58,6 +58,17 @@ void ScalesAudioProcessor::generateNoteSets()
     }
 }
 
+void ScalesAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
+{
+    if (treeWhosePropertyHasChanged == noteTree)
+    {
+        if (property == NoteInfo::noteID)
+        {
+            currentScaleNote = noteTree[NoteInfo::noteID];
+        }
+    }
+}
+
 //==============================================================================
 const String ScalesAudioProcessor::getName() const
 {
@@ -126,6 +137,8 @@ void ScalesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     generateNoteSets();
+    noteTree = ValueTree(NoteInfo::noteTree);
+    noteTree.addListener(this);
 }
 
 void ScalesAudioProcessor::releaseResources()
@@ -194,8 +207,10 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     {
         if (msg.getChannel() == controlChannel)
         {
-            if (msg.isNoteOn()) {
-                switch ((msg.getNoteNumber()/NUM_NOTES) - 2) {
+            if (msg.isNoteOn())
+            {
+                switch ((msg.getNoteNumber()/NUM_NOTES) - 2)
+                {
                     case 3:
                         currentScale = MAJOR;
                         currentScaleNote = msg.getNoteNumber() % NUM_NOTES;
@@ -211,7 +226,8 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                 }
             }
         }
-        else if (!msg.isNoteOnOrOff() || noteIsInScale(msg.getNoteNumber())) {
+        else if (!msg.isNoteOnOrOff() || noteIsInScale(msg.getNoteNumber()))
+        {
             output.addEvent(msg, sampleNum);
         }
     }

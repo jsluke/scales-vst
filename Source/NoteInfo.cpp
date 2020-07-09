@@ -10,7 +10,8 @@
 
 #include "NoteInfo.h"
 
-Identifier NoteInfo::noteTree ("NoteTree");
+Identifier NoteInfo::noteTreeID ("NoteTree");
+ValueTree NoteInfo::noteTree (noteTreeID);
 Identifier NoteInfo::noteID ("NoteID");
 
 const String NoteInfo::notes[NoteInfo::NUM_NOTES] = {

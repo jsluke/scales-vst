@@ -26,7 +26,8 @@ class NoteInfo
 {
 public:
     static const int NUM_NOTES = 12;
-    static Identifier noteTree;
+    static Identifier noteTreeID;
+    static ValueTree noteTree;
     static Identifier noteID;
     
     NoteInfo();
