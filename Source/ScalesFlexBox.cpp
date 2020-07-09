@@ -52,6 +52,8 @@ ScalesFlexBox::ScalesFlexBox ()
     comboBoxes[comboBoxIndex::NOTE] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::NOTE] -> addListener(this);
     noteTree = ValueTree(noteInfo.noteTree);
+    noteTree.addListener(this);
+    
     
     comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::OPERATION] -> setSelectedId(1);
@@ -121,7 +123,7 @@ void ScalesFlexBox::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 void ScalesFlexBox::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
 {
     if (treeWhosePropertyHasChanged == noteTree)
-        comboBoxes[comboBoxIndex::SCALE] -> setText(noteTree.getPropertyAsValue(property, nullptr).toString());
+        comboBoxes[comboBoxIndex::SCALE] -> setSelectedId(1);
 }
 //[/MiscUserCode]
 

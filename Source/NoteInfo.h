@@ -26,42 +26,15 @@ class NoteInfo
 {
 public:
     static const int NUM_NOTES = 12;
-    Identifier noteTree;
-    Identifier noteID;
+    static Identifier noteTree;
+    static Identifier noteID;
     
+    NoteInfo();
     
-    NoteInfo()
-    {
-        noteTree = Identifier("NoteTree");
-        noteID = Identifier("NoteID");
-        for (int i=0; i<NUM_NOTES; i++)
-            noteOptions[i] = Note(i, notes[i]);
-    }
-    
-    StringArray getStringArray()
-    {
-        StringArray options;
-        for (Note note : noteOptions)
-            options.add(note.localizedString);
-        return options;
-    }
+    StringArray getStringArray();
 
 private:
-    const String notes[NUM_NOTES] = {
-        "C",
-        "C#",
-        "D",
-        "D#",
-        "E",
-        "F",
-        "F#",
-        "G",
-        "G#",
-        "A",
-        "A#",
-        "B"
-    };
-    
+    static const String notes[NUM_NOTES];
     std::array<Note, NUM_NOTES> noteOptions;
 };
 

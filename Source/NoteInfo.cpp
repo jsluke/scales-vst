@@ -9,3 +9,35 @@
 */
 
 #include "NoteInfo.h"
+
+Identifier NoteInfo::noteTree ("NoteTree");
+Identifier NoteInfo::noteID ("NoteID");
+
+const String NoteInfo::notes[NoteInfo::NUM_NOTES] = {
+    "C",
+    "C#",
+    "D",
+    "D#",
+    "E",
+    "F",
+    "F#",
+    "G",
+    "G#",
+    "A",
+    "A#",
+    "B"
+};
+
+NoteInfo::NoteInfo()
+{
+    for (int i=0; i<NUM_NOTES; i++)
+        noteOptions[i] = Note(i, notes[i]);
+}
+
+StringArray NoteInfo::getStringArray()
+{
+    StringArray options;
+    for (Note note : noteOptions)
+        options.add(note.localizedString);
+    return options;
+}
