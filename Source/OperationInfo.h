@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <JuceHeader.h>
 #include <array>
 
 struct Operation
@@ -24,21 +25,12 @@ struct Operation
 class OperationInfo
 {
 public:
-    const Operation DROP = Operation(0, TRANS("Drop"));
+    static const Operation DROP;
     
-    OperationInfo()
-    {
-        operationOptions[DROP.order] = DROP;
-    }
+    OperationInfo();
     
-    StringArray getStringArray()
-    {
-        StringArray options;
-        for (Operation operation : operationOptions)
-            options.add(operation.localizedString);
-        return options;
-    }
-    
+    StringArray getStringArray();
+
 private:
     std::array<Operation, 1> operationOptions;
 };

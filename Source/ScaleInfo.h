@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <JuceHeader.h>
 #include <array>
 
 struct Scale
@@ -24,22 +25,12 @@ struct Scale
 class ScaleInfo
 {
 public:
-    const Scale MAJOR = Scale(0, TRANS("Major"));
-    const Scale MINOR = Scale(1, TRANS("Minor"));
+    static const Scale MAJOR;
+    static const Scale MINOR;
     
-    ScaleInfo()
-    {
-        scaleOptions[MAJOR.order] = MAJOR;
-        scaleOptions[MINOR.order] = MINOR;
-    }
+    ScaleInfo();
     
-    StringArray getStringArray()
-    {
-        StringArray options;
-        for (Scale scale : scaleOptions)
-            options.add(scale.localizedString);
-        return options;
-    }
+    StringArray getStringArray();
     
 private:
     std::array<Scale, 2> scaleOptions;
