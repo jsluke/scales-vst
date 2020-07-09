@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <JuceHeader.h>
 #include <array>
 
 struct Note
@@ -25,9 +26,14 @@ class NoteInfo
 {
 public:
     static const int NUM_NOTES = 12;
+    Identifier noteTree;
+    Identifier noteID;
+    
     
     NoteInfo()
     {
+        noteTree = Identifier("NoteTree");
+        noteID = Identifier("NoteID");
         for (int i=0; i<NUM_NOTES; i++)
             noteOptions[i] = Note(i, notes[i]);
     }

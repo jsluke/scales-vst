@@ -37,7 +37,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class ScalesFlexBox  : public Component
+class ScalesFlexBox : public Component, public ComboBox::Listener, public ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -63,6 +63,14 @@ private:
     NoteInfo noteInfo;
     ScaleInfo scaleInfo;
     OperationInfo operationInfo;
+    
+    ValueTree controlChannelTree;
+    ValueTree noteTree;
+    ValueTree scaleTree;
+    ValueTree operationTree;
+    
+    void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
+    void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
     //[/UserVariables]
 
     //==============================================================================

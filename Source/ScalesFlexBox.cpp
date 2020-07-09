@@ -46,15 +46,20 @@ ScalesFlexBox::ScalesFlexBox ()
     
     comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::SCALE] -> setSelectedId(1);
+    comboBoxes[comboBoxIndex::SCALE] -> addListener(this);
     
     comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::NOTE] -> setSelectedId(1);
+    comboBoxes[comboBoxIndex::NOTE] -> addListener(this);
+    noteTree = ValueTree(noteInfo.noteTree);
     
     comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::OPERATION] -> setSelectedId(1);
+    comboBoxes[comboBoxIndex::OPERATION] -> addListener(this);
     
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -107,6 +112,17 @@ void ScalesFlexBox::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void ScalesFlexBox::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
+{
+    if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::NOTE])
+        noteTree.setProperty(noteInfo.noteID, comboBoxThatHasChanged -> getSelectedId(), nullptr);
+}
+
+void ScalesFlexBox::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
+{
+    if (treeWhosePropertyHasChanged == noteTree)
+        comboBoxes[comboBoxIndex::SCALE] -> setText(noteTree.getPropertyAsValue(property, nullptr).toString());
+}
 //[/MiscUserCode]
 
 
