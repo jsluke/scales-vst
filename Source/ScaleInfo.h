@@ -38,7 +38,7 @@ public:
     
     StringArray getStringArray();
     Scale getInitialValue();
-    bool isNoteInScale(Scale scale, int scaleNote, int note);
+    bool isNoteInScale(int scaleID, int scaleNote, int note);
     
 private:
     

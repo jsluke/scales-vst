@@ -37,10 +37,10 @@ Scale ScaleInfo::getInitialValue()
     return scaleOptions[0];
 }
 
-bool ScaleInfo::isNoteInScale(Scale scale, int scaleNote, int note)
+bool ScaleInfo::isNoteInScale(int scaleID, int scaleNote, int note)
 {
     // TODO: catch out of range
-    return noteSets[scale.order][scaleNote][note];
+    return noteSets[scaleID][scaleNote][NoteInfo::getNoteInOctave(note)];
 }
 
 void ScaleInfo::initializeNoteSets()

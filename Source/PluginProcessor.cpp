@@ -194,16 +194,16 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         {
             if (msg.isNoteOn())
             {
-                // TODO: fn in ScaleInfo to determine which octave we get
+                // TODO: edit value trees for scale and note
                 switch (NoteInfo::getOctave(msg.getNoteNumber()))
                 {
                     case 3:
-                        currentScale = ScaleInfo::MAJOR;
+                        currentScale = ScaleInfo::MAJOR.order;
                         currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
                         break;
 
                     case 4:
-                        currentScale = ScaleInfo::MINOR;
+                        currentScale = ScaleInfo::MINOR.order;
                         currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
                         break;
 
