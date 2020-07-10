@@ -132,14 +132,26 @@ void ScalesFlexBox::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
     else if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::SCALE])
         scaleTree.setProperty(ScaleInfo::scaleID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
     else if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::CONTROL_CHANNEL])
-        scaleTree.setProperty(ControlChannelInfo::channelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+        channelTree.setProperty(ControlChannelInfo::channelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
 }
 
 void ScalesFlexBox::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
 {
-//    if (treeWhosePropertyHasChanged == noteTree)
-//        comboBoxes[comboBoxIndex::SCALE] -> setSelectedId(1);
+    if (treeWhosePropertyHasChanged == noteTree && property == NoteInfo::noteID)
+        updateComboBoxAsync(comboBoxes[comboBoxIndex::NOTE], (int)noteTree[NoteInfo::noteID] + 1);
+
+    else if (treeWhosePropertyHasChanged == scaleTree && property == ScaleInfo::scaleID)
+        updateComboBoxAsync(comboBoxes[comboBoxIndex::SCALE], (int)scaleTree[ScaleInfo::scaleID] + 1);
 }
+
+void ScalesFlexBox::updateComboBoxAsync(ComboBox* box, int newID)
+{
+    MessageManager::callAsync( [=]() {
+        box -> setSelectedId(newID);
+    });
+}
+
+
 //[/MiscUserCode]
 
 

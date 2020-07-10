@@ -71,6 +71,7 @@ private:
     
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
     void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
+    void updateComboBoxAsync(ComboBox* box, int newID);
     //[/UserVariables]
 
     //==============================================================================

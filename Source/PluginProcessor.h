@@ -69,7 +69,7 @@ private:
     
     //==============================================================================
     int currentScaleNote = 0;
-    int currentScale;
+    int currentScale = 0;
     int controlChannel = 0;
     int majorOctave = 3;
     int minorOctave = 4;

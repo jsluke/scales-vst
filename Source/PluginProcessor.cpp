@@ -199,12 +199,16 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                 {
                     case 3:
                         currentScale = ScaleInfo::MAJOR.order;
+                        scaleTree.setProperty(ScaleInfo::scaleID, ScaleInfo::MAJOR.order, nullptr);
                         currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
+                        noteTree.setProperty(NoteInfo::noteID, currentScaleNote, nullptr);
                         break;
 
                     case 4:
                         currentScale = ScaleInfo::MINOR.order;
+                        scaleTree.setProperty(ScaleInfo::scaleID, ScaleInfo::MINOR.order, nullptr);
                         currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
+                        noteTree.setProperty(NoteInfo::noteID, currentScaleNote, nullptr);
                         break;
 
                     default:
