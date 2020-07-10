@@ -64,7 +64,7 @@ private:
     ScaleInfo scaleInfo;
     OperationInfo operationInfo;
     
-    ValueTree controlChannelTree;
+    ValueTree channelTree;
     ValueTree noteTree;
     ValueTree scaleTree;
     ValueTree operationTree;

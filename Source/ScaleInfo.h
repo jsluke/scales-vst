@@ -13,6 +13,8 @@
 #include <JuceHeader.h>
 #include <array>
 
+#include "NoteInfo.h"
+
 struct Scale
 {
     int order;
@@ -35,7 +37,13 @@ public:
     ScaleInfo();
     
     StringArray getStringArray();
+    Scale getInitialValue();
+    bool isNoteInScale(Scale scale, int scaleNote, int note);
     
 private:
+    
     std::array<Scale, 2> scaleOptions;
+    bool noteSets[2][NoteInfo::NUM_NOTES][NoteInfo::NUM_NOTES] = {0};
+    
+    void initializeNoteSets();
 };

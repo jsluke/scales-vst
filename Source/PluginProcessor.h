@@ -16,6 +16,7 @@
 #include <unordered_map>
 
 #include "NoteInfo.h"
+#include "ScaleInfo.h"
 //==============================================================================
 /**
 */
@@ -64,24 +65,20 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScalesAudioProcessor)
     
     //==============================================================================
-    void generateNoteSets();
-    bool noteIsInScale(int note);
-    
     void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
     
     //==============================================================================
-    static const int NUM_NOTES = 12;
-    enum scaleType {MAJOR, MINOR, SCALE_TYPE_MAX = MINOR};
-    bool noteSets[SCALE_TYPE_MAX+1][NUM_NOTES][NUM_NOTES] = {0};
     int currentScaleNote = 0;
-    int currentScale = scaleType::MAJOR;
-    int controlChannel = -1;
+    Scale currentScale;
+    int controlChannel = 0;
     int majorOctave = 3;
     int minorOctave = 4;
     
-    ValueTree controlChannelTree;
+    ValueTree channelTree;
     ValueTree noteTree;
     ValueTree scaleTree;
     ValueTree operationTree;
+    
+    ScaleInfo scaleInfo;
 };
 	

@@ -44,9 +44,13 @@ ScalesFlexBox::ScalesFlexBox ()
         addAndMakeVisible(comboBox);
     }
     
+    // TODO: how to make sure GUI and processor are initialized w/ same value? Prob define in Info
+    
     comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::SCALE] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::SCALE] -> addListener(this);
+    scaleTree = ValueTree(ScaleInfo::scaleTree);
+    scaleTree.addListener(this);
     
     comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::NOTE] -> setSelectedId(1);
@@ -54,14 +58,17 @@ ScalesFlexBox::ScalesFlexBox ()
     noteTree = ValueTree(NoteInfo::noteTree);
     noteTree.addListener(this);
     
-    
     comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::OPERATION] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::OPERATION] -> addListener(this);
+    operationTree = ValueTree(OperationInfo::operationTree);
+    operationTree.addListener(this);
     
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
+    channelTree = ValueTree(ControlChannelInfo::channelTree);
+    channelTree.addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -116,8 +123,16 @@ void ScalesFlexBox::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void ScalesFlexBox::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 {
+    // TODO: need to clean up getSelectedId() - 1 nonsense. How to make sure the IDs mean the same thing?
+    
     if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::NOTE])
-        noteTree.setProperty(noteInfo.noteID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+        noteTree.setProperty(NoteInfo::noteID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+    else if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::OPERATION])
+        operationTree.setProperty(OperationInfo::operationID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+    else if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::SCALE])
+        scaleTree.setProperty(ScaleInfo::scaleID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+    else if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::CONTROL_CHANNEL])
+        scaleTree.setProperty(ControlChannelInfo::channelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
 }
 
 void ScalesFlexBox::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)

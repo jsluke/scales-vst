@@ -30,6 +30,9 @@ public:
     static const ValueTree noteTree;
     static const Identifier noteID;
     
+    static int getOctave(int note);
+    static int getNoteInOctave(int note);
+    
     NoteInfo();
     
     StringArray getStringArray();

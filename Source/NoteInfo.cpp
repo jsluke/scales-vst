@@ -42,3 +42,13 @@ StringArray NoteInfo::getStringArray()
         options.add(note.localizedString);
     return options;
 }
+
+int NoteInfo::getOctave(int note)
+{
+    return (note / NUM_NOTES) - 2;
+}
+
+int NoteInfo::getNoteInOctave(int note)
+{
+    return note % NUM_NOTES;
+}

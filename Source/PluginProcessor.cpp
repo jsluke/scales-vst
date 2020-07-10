@@ -31,42 +31,21 @@ ScalesAudioProcessor::~ScalesAudioProcessor()
 }
 
 //==============================================================================
-void ScalesAudioProcessor::generateNoteSets()
-{
-    // initialize major scale
-    for (int i=0; i<NUM_NOTES; i++)
-    {
-        noteSets[MAJOR][i][i] = true;
-        noteSets[MAJOR][i][(i+2) % NUM_NOTES] = true;
-        noteSets[MAJOR][i][(i+4) % NUM_NOTES] = true;
-        noteSets[MAJOR][i][(i+5) % NUM_NOTES] = true;
-        noteSets[MAJOR][i][(i+7) % NUM_NOTES] = true;
-        noteSets[MAJOR][i][(i+9) % NUM_NOTES] = true;
-        noteSets[MAJOR][i][(i+11) % NUM_NOTES] = true;
-    }
-    
-    // initialize minor scale
-    for (int i=0; i<NUM_NOTES; i++)
-    {
-        noteSets[MINOR][i][i] = true;
-        noteSets[MINOR][i][(i+2) % NUM_NOTES] = true;
-        noteSets[MINOR][i][(i+3) % NUM_NOTES] = true;
-        noteSets[MINOR][i][(i+5) % NUM_NOTES] = true;
-        noteSets[MINOR][i][(i+7) % NUM_NOTES] = true;
-        noteSets[MINOR][i][(i+8) % NUM_NOTES] = true;
-        noteSets[MINOR][i][(i+10) % NUM_NOTES] = true;
-    }
-}
-
 void ScalesAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
 {
-    if (treeWhosePropertyHasChanged == noteTree)
+    if (treeWhosePropertyHasChanged == noteTree && property == NoteInfo::noteID)
     {
-        if (property == NoteInfo::noteID)
-        {
             currentScaleNote = noteTree[NoteInfo::noteID];
-        }
     }
+    else if (treeWhosePropertyHasChanged == channelTree && property == ControlChannelInfo::channelID)
+    {
+             controlChannel = channelTree[ControlChannelInfo::channelID];
+    }
+    else if (treeWhosePropertyHasChanged == scaleTree && property == ScaleInfo::scaleID)
+    {
+             currentScale = scaleTree[ScaleInfo::scaleID];
+    }
+    
 }
 
 //==============================================================================
@@ -136,9 +115,15 @@ void ScalesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    generateNoteSets();
     noteTree = ValueTree(NoteInfo::noteTree);
     noteTree.addListener(this);
+    channelTree = ValueTree(ControlChannelInfo::channelTree);
+    channelTree.addListener(this);
+    operationTree = ValueTree(OperationInfo::operationTree);
+    operationTree.addListener(this);
+    scaleTree = ValueTree(ScaleInfo::scaleTree);
+    scaleTree.addListener(this);
+    
 }
 
 void ScalesAudioProcessor::releaseResources()
@@ -209,35 +194,31 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         {
             if (msg.isNoteOn())
             {
-                switch ((msg.getNoteNumber()/NUM_NOTES) - 2)
+                // TODO: fn in ScaleInfo to determine which octave we get
+                switch (NoteInfo::getOctave(msg.getNoteNumber()))
                 {
                     case 3:
-                        currentScale = MAJOR;
-                        currentScaleNote = msg.getNoteNumber() % NUM_NOTES;
+                        currentScale = ScaleInfo::MAJOR;
+                        currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
                         break;
-                    
+
                     case 4:
-                        currentScale = MINOR;
-                        currentScaleNote = msg.getNoteNumber() % NUM_NOTES;
+                        currentScale = ScaleInfo::MINOR;
+                        currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
                         break;
-                        
+
                     default:
                         break;
                 }
             }
         }
-        else if (!msg.isNoteOnOrOff() || noteIsInScale(msg.getNoteNumber()))
+        else if (!msg.isNoteOnOrOff() || scaleInfo.isNoteInScale(currentScale, currentScaleNote, msg.getNoteNumber()))
         {
             output.addEvent(msg, sampleNum);
         }
     }
 
     midiMessages.swapWith(output);
-}
-
-bool ScalesAudioProcessor::noteIsInScale(int note)
-{
-    return noteSets[currentScale][currentScaleNote][note % NUM_NOTES];
 }
 
 //==============================================================================
