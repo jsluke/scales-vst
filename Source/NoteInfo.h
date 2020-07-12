@@ -26,9 +26,9 @@ class NoteInfo
 {
 public:
     static const int NUM_NOTES = 12;
-    static const Identifier noteTreeID;
-    static const ValueTree noteTree;
     static const Identifier noteID;
+    
+    static ValueTree& getValueTree();
     
     static int getOctave(int note);
     static int getNoteInOctave(int note);
@@ -38,7 +38,11 @@ public:
     StringArray getStringArray();
 
 private:
+    static const Identifier noteTreeID;
     static const String notes[NUM_NOTES];
+    
+    static ValueTree getInitialValueTree();
+    
     std::array<Note, NUM_NOTES> noteOptions;
 };
 

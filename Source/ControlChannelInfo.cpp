@@ -11,8 +11,20 @@
 #include "ControlChannelInfo.h"
 
 const Identifier ControlChannelInfo::channelTreeID ("ChannelTree");
-const ValueTree ControlChannelInfo::channelTree (channelTreeID);
 const Identifier ControlChannelInfo::channelID ("ChannelID");
+
+ValueTree ControlChannelInfo::getInitialValueTree()
+{
+    ValueTree tree = ValueTree(channelTreeID);
+    tree.setProperty(channelID, 0, nullptr);
+    return tree;
+}
+
+ValueTree& ControlChannelInfo::getValueTree()
+{
+    static ValueTree channelTree = getInitialValueTree();
+    return channelTree;
+}
 
 ControlChannelInfo::ControlChannelInfo() {
     channelOptions[0] = ControlChannel(false, 0, TRANS("None"));

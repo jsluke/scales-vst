@@ -49,25 +49,25 @@ ScalesFlexBox::ScalesFlexBox ()
     comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::SCALE] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::SCALE] -> addListener(this);
-    scaleTree = ValueTree(ScaleInfo::scaleTree);
+    scaleTree = ValueTree(ScaleInfo::getValueTree());
     scaleTree.addListener(this);
     
     comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::NOTE] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::NOTE] -> addListener(this);
-    noteTree = ValueTree(NoteInfo::noteTree);
+    noteTree = ValueTree(NoteInfo::getValueTree());
     noteTree.addListener(this);
     
     comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::OPERATION] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::OPERATION] -> addListener(this);
-    operationTree = ValueTree(OperationInfo::operationTree);
+    operationTree = ValueTree(OperationInfo::getValueTree());
     operationTree.addListener(this);
     
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
-    channelTree = ValueTree(ControlChannelInfo::channelTree);
+    channelTree = ValueTree(ControlChannelInfo::getValueTree());
     channelTree.addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;

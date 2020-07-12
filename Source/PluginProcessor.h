@@ -68,9 +68,9 @@ private:
     void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
     
     //==============================================================================
-    int currentScaleNote = 0;
-    int currentScale = 0;
-    int controlChannel = 0;
+    int currentScaleNote;
+    int currentScale;
+    int controlChannel;
     int majorOctave = 3;
     int minorOctave = 4;
     

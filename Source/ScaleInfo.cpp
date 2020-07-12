@@ -14,8 +14,20 @@ const Scale ScaleInfo::MAJOR = Scale(0, TRANS("Major"));
 const Scale ScaleInfo::MINOR = Scale(1, TRANS("Minor"));
 
 const Identifier ScaleInfo::scaleTreeID ("ScaleTree");
-const ValueTree ScaleInfo::scaleTree (scaleTreeID);
 const Identifier ScaleInfo::scaleID ("ScaleID");
+
+ValueTree ScaleInfo::getInitialValueTree()
+{
+    ValueTree tree = ValueTree(scaleTreeID);
+    tree.setProperty(scaleID, 0, nullptr);
+    return tree;
+}
+
+ValueTree& ScaleInfo::getValueTree()
+{
+    static ValueTree scaleTree = getInitialValueTree();
+    return scaleTree;
+}
 
 ScaleInfo::ScaleInfo()
 {
@@ -32,15 +44,40 @@ StringArray ScaleInfo::getStringArray()
     return options;
 }
 
-Scale ScaleInfo::getInitialValue()
-{
-    return scaleOptions[0];
-}
-
 bool ScaleInfo::isNoteInScale(int scaleID, int scaleNote, int note)
 {
     // TODO: catch out of range
     return noteSets[scaleID][scaleNote][NoteInfo::getNoteInOctave(note)];
+}
+
+int ScaleInfo::getNoteUp(int scaleID, int scaleNote, int note, bool getNoteDownNotFound)
+{
+    int findNote = note;
+    do {
+        if (isNoteInScale(scaleID, scaleNote, findNote))
+            return findNote;
+        findNote++;
+    } while (findNote <= 127);
+    
+    if (getNoteDownNotFound)
+        return getNoteDown(scaleID, scaleNote, note, false);
+    else
+        return -1; // TODO: throw except?
+}
+
+int ScaleInfo::getNoteDown(int scaleID, int scaleNote, int note, bool getNoteUpNotFound)
+{
+    int findNote = note;
+    do {
+        if (isNoteInScale(scaleID, scaleNote, findNote))
+            return findNote;
+        findNote--;
+    } while (findNote >= 0);
+    
+    if (getNoteUpNotFound)
+        return getNoteUp(scaleID, scaleNote, note, false);
+    else
+        return -1; // TODO: throw except?
 }
 
 void ScaleInfo::initializeNoteSets()

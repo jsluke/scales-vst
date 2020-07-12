@@ -26,14 +26,18 @@ class OperationInfo
 {
 public:
     static const Operation DROP;
-    static const Identifier operationTreeID;
-    static const ValueTree operationTree;
     static const Identifier operationID;
+    
+    static ValueTree& getValueTree();
     
     OperationInfo();
     
     StringArray getStringArray();
 
 private:
+    static const Identifier operationTreeID;
+    
+    static ValueTree getInitialValueTree();
+    
     std::array<Operation, 1> operationOptions;
 };

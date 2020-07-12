@@ -115,14 +115,18 @@ void ScalesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    noteTree = ValueTree(NoteInfo::noteTree);
+    noteTree = ValueTree(NoteInfo::getValueTree());
     noteTree.addListener(this);
-    channelTree = ValueTree(ControlChannelInfo::channelTree);
+    channelTree = ValueTree(ControlChannelInfo::getValueTree());
     channelTree.addListener(this);
-    operationTree = ValueTree(OperationInfo::operationTree);
+    operationTree = ValueTree(OperationInfo::getValueTree());
     operationTree.addListener(this);
-    scaleTree = ValueTree(ScaleInfo::scaleTree);
+    scaleTree = ValueTree(ScaleInfo::getValueTree());
     scaleTree.addListener(this);
+    
+    currentScaleNote = noteTree[NoteInfo::noteID];
+    currentScale = scaleTree[ScaleInfo::scaleID];
+    controlChannel = channelTree[ControlChannelInfo::channelID];
     
 }
 

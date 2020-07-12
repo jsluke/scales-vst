@@ -11,8 +11,20 @@
 #include "NoteInfo.h"
 
 const Identifier NoteInfo::noteTreeID ("NoteTree");
-const ValueTree NoteInfo::noteTree (noteTreeID);
 const Identifier NoteInfo::noteID ("NoteID");
+
+ValueTree NoteInfo::getInitialValueTree()
+{
+    ValueTree tree = ValueTree(noteTreeID);
+    tree.setProperty(noteID, 0, nullptr);
+    return tree;
+}
+
+ValueTree& NoteInfo::getValueTree()
+{
+    static ValueTree noteTree = getInitialValueTree();
+    return noteTree;
+}
 
 const String NoteInfo::notes[NoteInfo::NUM_NOTES] = {
     "C",

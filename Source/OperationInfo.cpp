@@ -13,8 +13,21 @@
 const Operation OperationInfo::DROP = Operation(0, TRANS("Drop"));
 
 const Identifier OperationInfo::operationTreeID ("OperationTree");
-const ValueTree OperationInfo::operationTree (operationTreeID);
 const Identifier OperationInfo::operationID ("OperationID");
+
+ValueTree OperationInfo::getInitialValueTree()
+{
+    ValueTree tree = ValueTree(operationTreeID);
+    tree.setProperty(operationID, 0, nullptr);
+    return tree;
+}
+
+ValueTree& OperationInfo::getValueTree()
+{
+    static ValueTree operationTree = getInitialValueTree();
+    return operationTree;
+}
+
 
 OperationInfo::OperationInfo()
 {

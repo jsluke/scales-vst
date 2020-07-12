@@ -27,9 +27,9 @@ class ControlChannelInfo
 {
     
 public:
-    static const Identifier channelTreeID;
-    static const ValueTree channelTree;
     static const Identifier channelID;
+    
+    static ValueTree& getValueTree();
     
     ControlChannelInfo();
     
@@ -37,5 +37,9 @@ public:
     StringArray getStringArray();
 
 private:
+    static const Identifier channelTreeID;
+    
+    static ValueTree getInitialValueTree();
+    
     std::array<ControlChannel, 17> channelOptions;
 };
