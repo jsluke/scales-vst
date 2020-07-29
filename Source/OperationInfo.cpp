@@ -11,6 +11,9 @@
 #include "OperationInfo.h"
 
 const Operation OperationInfo::DROP = Operation(0, TRANS("Drop"));
+const Operation OperationInfo::UP = Operation(1, TRANS("Up"));
+const Operation OperationInfo::DOWN = Operation(2, TRANS("Down"));
+const Operation OperationInfo::RAND = Operation(3, TRANS("Random"));
 
 const Identifier OperationInfo::operationTreeID ("OperationTree");
 const Identifier OperationInfo::operationID ("OperationID");
@@ -32,6 +35,9 @@ ValueTree& OperationInfo::getValueTree()
 OperationInfo::OperationInfo()
 {
     operationOptions[DROP.order] = DROP;
+    operationOptions[UP.order] = UP;
+    operationOptions[DOWN.order] = DOWN;
+    operationOptions[RAND.order] = RAND;
 }
 
 StringArray OperationInfo::getStringArray()

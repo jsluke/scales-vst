@@ -66,13 +66,19 @@ private:
     
     //==============================================================================
     void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
+    void setNoteMap(MidiMessage msg, int toSet);
+    bool shouldSkipNoteOff(MidiMessage msg, int toSet);
+    int newToSet(MidiMessage msg, int toSet);
     
     //==============================================================================
     int currentScaleNote;
     int currentScale;
     int controlChannel;
+    int operation;
     int majorOctave = 3;
     int minorOctave = 4;
+    
+    int noteOnMap[128];
     
     ValueTree channelTree;
     ValueTree noteTree;
