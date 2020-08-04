@@ -86,5 +86,7 @@ private:
     ValueTree operationTree;
     
     ScaleInfo scaleInfo;
+    
+    Random random;
 };
 	

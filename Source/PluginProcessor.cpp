@@ -279,6 +279,23 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                 msg.setNoteNumber(toSet);
                 output.addEvent(msg, sampleNum);
             }
+            else if (operation == OperationInfo::RAND.order)
+            {
+                int toSet;
+                if (random.nextBool())
+                    toSet = scaleInfo.getNoteDown(currentScale, currentScaleNote, msg.getNoteNumber(), true);
+                else
+                    toSet = scaleInfo.getNoteUp(currentScale, currentScaleNote, msg.getNoteNumber(), true);
+
+                toSet = newToSet(msg, toSet);
+                setNoteMap(msg, toSet);
+
+                if (shouldSkipNoteOff(msg, toSet))
+                    continue;
+
+                msg.setNoteNumber(toSet);
+                output.addEvent(msg, sampleNum);
+            }
         }
     }
 
