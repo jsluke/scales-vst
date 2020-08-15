@@ -20,56 +20,47 @@
 //[Headers] You can add your own extra header files here...
 //[/Headers]
 
-#include "ScalesFlexBox.h"
+#include "ControlSelect.h"
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
 //==============================================================================
-ScalesFlexBox::ScalesFlexBox ()
+ControlSelect::ControlSelect ()
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
 
     //[UserPreSize]
-    flexBox.items.add(FlexItem(500, 100).withMargin(5));
-    auto &flexItemScale = flexBox.items.getReference(flexBox.items.size() - 1);
-    auto *scaleSelect = new ScaleSelect();
-    panels.add(scaleSelect);
-    flexItemScale.associatedComponent = scaleSelect;
-    addAndMakeVisible(scaleSelect);
-       
-    flexBox.items.add(FlexItem(500, 100).withMargin(5));
-    auto &flexItemOp = flexBox.items.getReference(flexBox.items.size() - 1);
-    auto *operationSelect = new OperationSelect();
-    panels.add(operationSelect);
-    flexItemOp.associatedComponent = operationSelect;
-    addAndMakeVisible(operationSelect);
+    flexBox.items.add(FlexItem(100, 30).withMargin(10));
+    auto &flexItem = flexBox.items.getReference(flexBox.items.size() - 1);
+    ComboBox* box = new ComboBox();
+    comboBoxes.add(box);
+    flexItem.associatedComponent = box;
+    addAndMakeVisible(box);
     
-    flexBox.items.add(FlexItem(500, 100).withMargin(5));
-    auto &flexItemControl = flexBox.items.getReference(flexBox.items.size() - 1);
-    auto *controlSelect = new ControlSelect();
-    panels.add(controlSelect);
-    flexItemControl.associatedComponent = controlSelect;
-    addAndMakeVisible(controlSelect);
-
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
+    channelTree = ValueTree(ControlChannelInfo::getValueTree());
+    
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
-    flexBox.flexDirection = FlexBox::Direction::column;
+    flexBox.flexDirection = FlexBox::Direction::row;
     flexBox.justifyContent = FlexBox::JustifyContent::flexStart;
     flexBox.alignItems = FlexBox::AlignItems::flexStart;
     flexBox.flexWrap = FlexBox::Wrap::wrap;
     //[/UserPreSize]
 
-    setSize (600, 400);
+    setSize (500, 150);
 
 
     //[Constructor] You can add your own custom stuff here..
     //[/Constructor]
 }
 
-ScalesFlexBox::~ScalesFlexBox()
+ControlSelect::~ControlSelect()
 {
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
@@ -77,23 +68,22 @@ ScalesFlexBox::~ScalesFlexBox()
 
 
     //[Destructor]. You can add your own custom destruction code here..
-
     //[/Destructor]
 }
 
 //==============================================================================
-void ScalesFlexBox::paint (Graphics& g)
+void ControlSelect::paint (Graphics& g)
 {
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff323e44));
+    g.fillAll (Colour (0xff3e4c54));
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
 }
 
-void ScalesFlexBox::resized()
+void ControlSelect::resized()
 {
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
@@ -106,6 +96,13 @@ void ScalesFlexBox::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void ControlSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
+{
+    // TODO: need to clean up getSelectedId() - 1 nonsense. How to make sure the IDs mean the same thing?
+
+    if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::CONTROL_CHANNEL])
+        channelTree.setProperty(ControlChannelInfo::channelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+}
 //[/MiscUserCode]
 
 
@@ -118,11 +115,11 @@ void ScalesFlexBox::resized()
 
 BEGIN_JUCER_METADATA
 
-<JUCER_COMPONENT documentType="Component" className="ScalesFlexBox" componentName=""
-                 parentClasses="public Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="600" initialHeight="400">
-  <BACKGROUND backgroundColour="ff323e44"/>
+<JUCER_COMPONENT documentType="Component" className="ControlSelect" componentName=""
+                 parentClasses="public Component, public ComboBox::Listener" constructorParams=""
+                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
+                 overlayOpacity="0.330" fixedSize="0" initialWidth="500" initialHeight="150">
+  <BACKGROUND backgroundColour="ff3e4c54"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

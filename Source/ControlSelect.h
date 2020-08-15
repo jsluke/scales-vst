@@ -22,12 +22,6 @@
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
 #include "ControlChannelInfo.h"
-#include "NoteInfo.h"
-#include "ScaleInfo.h"
-#include "OperationInfo.h"
-#include "ScaleSelect.h"
-#include "OperationSelect.h"
-#include "ControlSelect.h"
 //[/Headers]
 
 
@@ -40,12 +34,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class ScalesFlexBox  : public Component
+class ControlSelect  : public Component,
+                       public ComboBox::Listener
 {
 public:
     //==============================================================================
-    ScalesFlexBox ();
-    ~ScalesFlexBox() override;
+    ControlSelect ();
+    ~ControlSelect() override;
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -59,14 +54,19 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     FlexBox flexBox;
-    OwnedArray<Component> panels;
+    OwnedArray<ComboBox> comboBoxes;
+    enum comboBoxIndex {CONTROL_CHANNEL};
+    ControlChannelInfo controlChannelInfo;
+    ValueTree channelTree;
+    
+    void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
     //[/UserVariables]
 
     //==============================================================================
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScalesFlexBox)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ControlSelect)
 };
 
 //[EndFile] You can add extra defines here...

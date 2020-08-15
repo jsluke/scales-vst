@@ -29,6 +29,15 @@
       <FILE id="hPZthb" name="ScalesFlexBox.h" compile="0" resource="0" file="Source/ScalesFlexBox.h"/>
       <FILE id="QlgQc1" name="ScalesFlexBox.cpp" compile="1" resource="0"
             file="Source/ScalesFlexBox.cpp"/>
+      <FILE id="uJ0Pes" name="ScaleSelect.h" compile="0" resource="0" file="Source/ScaleSelect.h"/>
+      <FILE id="VXfaSu" name="ScaleSelect.cpp" compile="1" resource="0" file="Source/ScaleSelect.cpp"/>
+      <FILE id="gW1LTO" name="OperationSelect.h" compile="0" resource="0"
+            file="Source/OperationSelect.h"/>
+      <FILE id="N7yZsN" name="OperationSelect.cpp" compile="1" resource="0"
+            file="Source/OperationSelect.cpp"/>
+      <FILE id="XCNrm7" name="ControlSelect.h" compile="0" resource="0" file="Source/ControlSelect.h"/>
+      <FILE id="jTGizZ" name="ControlSelect.cpp" compile="1" resource="0"
+            file="Source/ControlSelect.cpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
