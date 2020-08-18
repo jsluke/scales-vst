@@ -58,7 +58,7 @@ private:
     enum comboBoxIndex {CONTROL_CHANNEL};
     ControlChannelInfo controlChannelInfo;
     ValueTree channelTree;
-    
+
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
     //[/UserVariables]
 

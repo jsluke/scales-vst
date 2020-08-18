@@ -40,12 +40,12 @@ ControlSelect::ControlSelect ()
     comboBoxes.add(box);
     flexItem.associatedComponent = box;
     addAndMakeVisible(box);
-    
+
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
     channelTree = ValueTree(ControlChannelInfo::getValueTree());
-    
+
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
     flexBox.justifyContent = FlexBox::JustifyContent::flexStart;
@@ -53,7 +53,7 @@ ControlSelect::ControlSelect ()
     flexBox.flexWrap = FlexBox::Wrap::wrap;
     //[/UserPreSize]
 
-    setSize (500, 150);
+    setSize (500, 100);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -118,7 +118,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="ControlSelect" componentName=""
                  parentClasses="public Component, public ComboBox::Listener" constructorParams=""
                  variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330" fixedSize="0" initialWidth="500" initialHeight="150">
+                 overlayOpacity="0.330" fixedSize="0" initialWidth="500" initialHeight="100">
   <BACKGROUND backgroundColour="ff3e4c54"/>
 </JUCER_COMPONENT>
 

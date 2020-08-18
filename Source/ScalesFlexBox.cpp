@@ -40,14 +40,21 @@ ScalesFlexBox::ScalesFlexBox ()
     panels.add(scaleSelect);
     flexItemScale.associatedComponent = scaleSelect;
     addAndMakeVisible(scaleSelect);
-       
+
+    flexBox.items.add(FlexItem(500, 100).withMargin(5));
+    auto &flexItemTranspose = flexBox.items.getReference(flexBox.items.size() - 1);
+    auto *transposeSelect = new TransposeSelect();
+    panels.add(transposeSelect);
+    flexItemTranspose.associatedComponent = transposeSelect;
+    addAndMakeVisible(transposeSelect);
+
     flexBox.items.add(FlexItem(500, 100).withMargin(5));
     auto &flexItemOp = flexBox.items.getReference(flexBox.items.size() - 1);
     auto *operationSelect = new OperationSelect();
     panels.add(operationSelect);
     flexItemOp.associatedComponent = operationSelect;
     addAndMakeVisible(operationSelect);
-    
+
     flexBox.items.add(FlexItem(500, 100).withMargin(5));
     auto &flexItemControl = flexBox.items.getReference(flexBox.items.size() - 1);
     auto *controlSelect = new ControlSelect();
@@ -62,7 +69,7 @@ ScalesFlexBox::ScalesFlexBox ()
     flexBox.flexWrap = FlexBox::Wrap::wrap;
     //[/UserPreSize]
 
-    setSize (600, 400);
+    setSize (510, 440);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -121,7 +128,7 @@ BEGIN_JUCER_METADATA
 <JUCER_COMPONENT documentType="Component" className="ScalesFlexBox" componentName=""
                  parentClasses="public Component" constructorParams="" variableInitialisers=""
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="600" initialHeight="400">
+                 fixedSize="0" initialWidth="510" initialHeight="440">
   <BACKGROUND backgroundColour="ff323e44"/>
 </JUCER_COMPONENT>
 

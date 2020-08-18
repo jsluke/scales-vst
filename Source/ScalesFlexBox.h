@@ -28,6 +28,7 @@
 #include "ScaleSelect.h"
 #include "OperationSelect.h"
 #include "ControlSelect.h"
+#include "TransposeSelect.h"
 //[/Headers]
 
 

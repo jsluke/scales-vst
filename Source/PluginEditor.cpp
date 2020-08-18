@@ -18,7 +18,7 @@ ScalesAudioProcessorEditor::ScalesAudioProcessorEditor (ScalesAudioProcessor& p)
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     addAndMakeVisible(flexBox);
-    setSize (600, 400);
+    setSize (510, 440);
 }
 
 ScalesAudioProcessorEditor::~ScalesAudioProcessorEditor()

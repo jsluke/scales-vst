@@ -21,7 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
-#include "OperationInfo.h"
+#include "NoteInfo.h"
 //[/Headers]
 
 
@@ -34,13 +34,14 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class OperationSelect  : public Component,
-                         public ComboBox::Listener
+class TransposeSelect  : public Component,
+                         public ComboBox::Listener,
+                         public Button::Listener
 {
 public:
     //==============================================================================
-    OperationSelect ();
-    ~OperationSelect() override;
+    TransposeSelect ();
+    ~TransposeSelect() override;
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -54,20 +55,23 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     FlexBox flexBox;
-    OwnedArray<ComboBox> comboBoxes;
+    OwnedArray<Component> components;
 
-    enum comboBoxIndex {OPERATION};
-    OperationInfo operationInfo;
-    ValueTree operationTree;
+    enum componentIndex {ONOFF_TOGGLE, NOTE};
+
+    NoteInfo noteInfo;
+    ValueTree transposeTree;
 
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
+    void buttonClicked(Button *buttonThatWasClicked) override;
+    void buttonStateChanged(Button *buttonThatHasChanged) override;
     //[/UserVariables]
 
     //==============================================================================
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OperationSelect)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransposeSelect)
 };
 
 //[EndFile] You can add extra defines here...
