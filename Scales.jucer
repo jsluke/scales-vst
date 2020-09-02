@@ -8,6 +8,9 @@
               headerPath="../../Source">
   <MAINGROUP id="UikYWG" name="Scales">
     <GROUP id="{66881EAD-FDE3-3B6D-6EF8-49CB0999E9D0}" name="Source">
+      <FILE id="pwDtSs" name="TransposeInfo.cpp" compile="1" resource="0"
+            file="Source/TransposeInfo.cpp"/>
+      <FILE id="f2MGX1" name="TransposeInfo.h" compile="0" resource="0" file="Source/TransposeInfo.h"/>
       <FILE id="RXbSiv" name="ControlChannelInfo.h" compile="0" resource="0"
             file="Source/ControlChannelInfo.h"/>
       <FILE id="Uu7soZ" name="ControlChannelInfo.cpp" compile="1" resource="0"
@@ -86,7 +89,7 @@
     <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
   <LIVE_SETTINGS>
-    <OSX buildEnabled="1"/>
+    <OSX buildEnabled="0"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
 </JUCERPROJECT>

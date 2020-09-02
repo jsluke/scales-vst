@@ -51,10 +51,13 @@ TransposeSelect::TransposeSelect ()
     // TODO: ugly casting, refactor
     ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> setToggleState(false, NotificationType::dontSendNotification);
     ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> setButtonText("Enable Transpose");
+    ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> addListener(this);
 
     ((ComboBox*)components[componentIndex::NOTE]) -> addItemList(noteInfo.getStringArray(), 1);
     ((ComboBox*)components[componentIndex::NOTE]) -> setSelectedId(1);
     ((ComboBox*)components[componentIndex::NOTE]) -> addListener(this);
+    
+    transposeTree = ValueTree(TransposeInfo::getValueTree());
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -108,7 +111,8 @@ void TransposeSelect::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void TransposeSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 {
-
+    if (comboBoxThatHasChanged == (ComboBox*)(components[componentIndex::NOTE]))
+        transposeTree.setProperty(TransposeInfo::transNoteID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
 };
 
 void TransposeSelect::buttonClicked(Button *buttonThatWasClicked)
@@ -118,6 +122,8 @@ void TransposeSelect::buttonClicked(Button *buttonThatWasClicked)
 
 void TransposeSelect::buttonStateChanged(Button *buttonThatHasChanged)
 {
+    if (buttonThatHasChanged == (Button*)(components[componentIndex::ONOFF_TOGGLE]))
+        transposeTree.setProperty(TransposeInfo::isEnabledID, buttonThatHasChanged -> getToggleStateValue(), nullptr);
 
 };
 //[/MiscUserCode]

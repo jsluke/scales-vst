@@ -17,6 +17,9 @@
 
 #include "NoteInfo.h"
 #include "ScaleInfo.h"
+#include "ControlChannelInfo.h"
+#include "OperationInfo.h"
+#include "TransposeInfo.h"
 //==============================================================================
 /**
 */
@@ -69,6 +72,7 @@ private:
     void setNoteMap(MidiMessage msg, int toSet);
     bool shouldSkipNoteOff(MidiMessage msg, int toSet);
     int newToSet(MidiMessage msg, int toSet);
+    int transpose(int noteNumber);
     
     //==============================================================================
     int currentScaleNote;
@@ -78,12 +82,16 @@ private:
     int majorOctave = 3;
     int minorOctave = 4;
     
+    int transposeNote;
+    bool transposeEnabled;
+    
     int noteOnMap[128];
     
     ValueTree channelTree;
     ValueTree noteTree;
     ValueTree scaleTree;
     ValueTree operationTree;
+    ValueTree transposeTree;
     
     ScaleInfo scaleInfo;
     
