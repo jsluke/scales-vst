@@ -22,6 +22,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
 #include "OperationInfo.h"
+#include "MidiChannelInfo.h"
 //[/Headers]
 
 
@@ -56,11 +57,14 @@ private:
     FlexBox flexBox;
     OwnedArray<ComboBox> comboBoxes;
 
-    enum comboBoxIndex {OPERATION};
+    enum comboBoxIndex {OPERATION, ROUTE};
     OperationInfo operationInfo;
+    MidiChannelInfo midiChannelInfo;
     ValueTree operationTree;
+    ValueTree routeChannelTree;
 
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
+    void updateVisibleComboBoxAsync(ComboBox* box, bool isVisible);
     //[/UserVariables]
 
     //==============================================================================

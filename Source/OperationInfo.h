@@ -29,6 +29,7 @@ public:
     static const Operation UP;
     static const Operation DOWN;
     static const Operation RAND;
+    static const Operation ROUTE;
     static const Identifier operationID;
     
     static ValueTree& getValueTree();
@@ -42,5 +43,5 @@ private:
     
     static ValueTree getInitialValueTree();
     
-    std::array<Operation, 4> operationOptions;
+    std::array<Operation, 5> operationOptions;
 };

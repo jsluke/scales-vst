@@ -41,10 +41,10 @@ ControlSelect::ControlSelect ()
     flexItem.associatedComponent = box;
     addAndMakeVisible(box);
 
-    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(controlChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(midiChannelInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
-    channelTree = ValueTree(ControlChannelInfo::getValueTree());
+    controlChannelTree = ValueTree(MidiChannelInfo::getControlValueTree());
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -101,7 +101,7 @@ void ControlSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
     // TODO: need to clean up getSelectedId() - 1 nonsense. How to make sure the IDs mean the same thing?
 
     if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::CONTROL_CHANNEL])
-        channelTree.setProperty(ControlChannelInfo::channelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+        controlChannelTree.setProperty(MidiChannelInfo::controlChannelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
 }
 //[/MiscUserCode]
 

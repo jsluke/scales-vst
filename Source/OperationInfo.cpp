@@ -14,6 +14,7 @@ const Operation OperationInfo::DROP = Operation(0, TRANS("Drop"));
 const Operation OperationInfo::UP = Operation(1, TRANS("Up"));
 const Operation OperationInfo::DOWN = Operation(2, TRANS("Down"));
 const Operation OperationInfo::RAND = Operation(3, TRANS("Random"));
+const Operation OperationInfo::ROUTE = Operation(4, TRANS("Route"));
 
 const Identifier OperationInfo::operationTreeID ("OperationTree");
 const Identifier OperationInfo::operationID ("OperationID");
@@ -38,6 +39,7 @@ OperationInfo::OperationInfo()
     operationOptions[UP.order] = UP;
     operationOptions[DOWN.order] = DOWN;
     operationOptions[RAND.order] = RAND;
+    operationOptions[ROUTE.order] = ROUTE;
 }
 
 StringArray OperationInfo::getStringArray()

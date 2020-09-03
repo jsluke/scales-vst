@@ -17,7 +17,7 @@
 
 #include "NoteInfo.h"
 #include "ScaleInfo.h"
-#include "ControlChannelInfo.h"
+#include "MidiChannelInfo.h"
 #include "OperationInfo.h"
 #include "TransposeInfo.h"
 //==============================================================================
@@ -87,7 +87,7 @@ private:
     
     int noteOnMap[128];
     
-    ValueTree channelTree;
+    ValueTree controlChannelTree;
     ValueTree noteTree;
     ValueTree scaleTree;
     ValueTree operationTree;

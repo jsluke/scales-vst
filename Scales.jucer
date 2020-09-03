@@ -11,10 +11,10 @@
       <FILE id="pwDtSs" name="TransposeInfo.cpp" compile="1" resource="0"
             file="Source/TransposeInfo.cpp"/>
       <FILE id="f2MGX1" name="TransposeInfo.h" compile="0" resource="0" file="Source/TransposeInfo.h"/>
-      <FILE id="RXbSiv" name="ControlChannelInfo.h" compile="0" resource="0"
-            file="Source/ControlChannelInfo.h"/>
-      <FILE id="Uu7soZ" name="ControlChannelInfo.cpp" compile="1" resource="0"
-            file="Source/ControlChannelInfo.cpp"/>
+      <FILE id="RXbSiv" name="MidiChannelInfo.h" compile="0" resource="0"
+            file="Source/MidiChannelInfo.h"/>
+      <FILE id="Uu7soZ" name="MidiChannelInfo.cpp" compile="1" resource="0"
+            file="Source/MidiChannelInfo.cpp"/>
       <FILE id="lC8XJT" name="NoteInfo.h" compile="0" resource="0" file="Source/NoteInfo.h"/>
       <FILE id="oABoAX" name="NoteInfo.cpp" compile="1" resource="0" file="Source/NoteInfo.cpp"/>
       <FILE id="Ra513X" name="OperationInfo.h" compile="0" resource="0" file="Source/OperationInfo.h"/>

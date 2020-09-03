@@ -21,7 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
-#include "ControlChannelInfo.h"
+#include "MidiChannelInfo.h"
 //[/Headers]
 
 
@@ -56,8 +56,8 @@ private:
     FlexBox flexBox;
     OwnedArray<ComboBox> comboBoxes;
     enum comboBoxIndex {CONTROL_CHANNEL};
-    ControlChannelInfo controlChannelInfo;
-    ValueTree channelTree;
+    MidiChannelInfo midiChannelInfo;
+    ValueTree controlChannelTree;
 
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
     //[/UserVariables]

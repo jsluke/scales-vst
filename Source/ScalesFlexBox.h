@@ -21,7 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
-#include "ControlChannelInfo.h"
+#include "MidiChannelInfo.h"
 #include "NoteInfo.h"
 #include "ScaleInfo.h"
 #include "OperationInfo.h"

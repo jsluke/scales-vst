@@ -37,9 +37,9 @@ void ScalesAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhoseProperty
     {
             currentScaleNote = noteTree[NoteInfo::noteID];
     }
-    else if (treeWhosePropertyHasChanged == channelTree && property == ControlChannelInfo::channelID)
+    else if (treeWhosePropertyHasChanged == controlChannelTree && property == MidiChannelInfo::controlChannelID)
     {
-             controlChannel = channelTree[ControlChannelInfo::channelID];
+             controlChannel = controlChannelTree[MidiChannelInfo::controlChannelID];
     }
     else if (treeWhosePropertyHasChanged == scaleTree && property == ScaleInfo::scaleID)
     {
@@ -129,8 +129,8 @@ void ScalesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // initialisation that you need..
     noteTree = ValueTree(NoteInfo::getValueTree());
     noteTree.addListener(this);
-    channelTree = ValueTree(ControlChannelInfo::getValueTree());
-    channelTree.addListener(this);
+    controlChannelTree = ValueTree(MidiChannelInfo::getControlValueTree());
+    controlChannelTree.addListener(this);
     operationTree = ValueTree(OperationInfo::getValueTree());
     operationTree.addListener(this);
     scaleTree = ValueTree(ScaleInfo::getValueTree());
@@ -140,7 +140,7 @@ void ScalesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     
     currentScaleNote = noteTree[NoteInfo::noteID];
     currentScale = scaleTree[ScaleInfo::scaleID];
-    controlChannel = channelTree[ControlChannelInfo::channelID];
+    controlChannel = controlChannelTree[MidiChannelInfo::controlChannelID];
     operation = operationTree[OperationInfo::operationID];
     
     for(int i=0; i<NoteInfo::NUM_NOTES; i++)

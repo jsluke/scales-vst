@@ -35,16 +35,28 @@ OperationSelect::OperationSelect ()
 
     //[UserPreSize]
     flexBox.items.add(FlexItem(100, 30).withMargin(10));
-    auto &flexItem = flexBox.items.getReference(flexBox.items.size() - 1);
-    ComboBox* box = new ComboBox();
-    comboBoxes.add(box);
-    flexItem.associatedComponent = box;
-    addAndMakeVisible(box);
+    auto &operationflexItem = flexBox.items.getReference(flexBox.items.size() - 1);
+    ComboBox* operationBox = new ComboBox();
+    comboBoxes.add(operationBox);
+    operationflexItem.associatedComponent = operationBox;
+    addAndMakeVisible(operationBox);
 
     comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::OPERATION] -> setSelectedId(1);
     comboBoxes[comboBoxIndex::OPERATION] -> addListener(this);
     operationTree = ValueTree(OperationInfo::getValueTree());
+    
+    flexBox.items.add(FlexItem(100, 30).withMargin(10));
+    auto &routeFlexItem = flexBox.items.getReference(flexBox.items.size() - 1);
+    ComboBox* routeBox = new ComboBox();
+    comboBoxes.add(routeBox);
+    routeFlexItem.associatedComponent = routeBox;
+    addChildComponent(routeBox);
+    
+    comboBoxes[comboBoxIndex::ROUTE] -> addItemList(midiChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::ROUTE] -> setSelectedId(1);
+    comboBoxes[comboBoxIndex::ROUTE] -> addListener(this);
+    routeChannelTree = ValueTree(MidiChannelInfo::getRouteValueTree());
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -101,7 +113,24 @@ void OperationSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
     // TODO: need to clean up getSelectedId() - 1 nonsense. How to make sure the IDs mean the same thing?
 
     if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::OPERATION])
+    {
         operationTree.setProperty(OperationInfo::operationID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+        
+        if (comboBoxes[comboBoxIndex::OPERATION] -> getSelectedId() == OperationInfo::ROUTE.order + 1)
+            updateVisibleComboBoxAsync(comboBoxes[comboBoxIndex::ROUTE], true);
+        else
+            updateVisibleComboBoxAsync(comboBoxes[comboBoxIndex::ROUTE], false);
+    }
+    
+    if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::ROUTE])
+        routeChannelTree.setProperty(MidiChannelInfo::routeChannelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+}
+
+void OperationSelect::updateVisibleComboBoxAsync(ComboBox* box, bool isVisible)
+{
+    MessageManager::callAsync( [=]() {
+        box -> setVisible(isVisible);
+    });
 }
 //[/MiscUserCode]
 
