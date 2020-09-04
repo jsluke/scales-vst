@@ -238,6 +238,11 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                         break;
                 }
             }
+            // prevent infinite note on scenario caused by control channel
+            else if (msg.isNoteOff())
+            {
+                output.addEvent(msg, sampleNum);
+            }
         }
         else if (!msg.isNoteOnOrOff())
         {
@@ -304,6 +309,18 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                     toSet = scaleInfo.getNoteUp(currentScale, noteToUse, msg.getNoteNumber(), true);
 
                 toSet = transpose(toSet);
+                toSet = newToSet(msg, toSet);
+                setNoteMap(msg, toSet);
+
+                if (shouldSkipNoteOff(msg, toSet))
+                    continue;
+
+                msg.setNoteNumber(toSet);
+                output.addEvent(msg, sampleNum);
+            }
+            if (operation == OperationInfo::ROUTE.order)
+            {
+                int toSet = transpose(msg.getNoteNumber());
                 toSet = newToSet(msg, toSet);
                 setNoteMap(msg, toSet);
 
