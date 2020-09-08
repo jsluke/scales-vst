@@ -41,10 +41,11 @@ OperationSelect::OperationSelect ()
     operationflexItem.associatedComponent = operationBox;
     addAndMakeVisible(operationBox);
 
-    comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::OPERATION] -> setSelectedId(1);
-    comboBoxes[comboBoxIndex::OPERATION] -> addListener(this);
     operationTree = ValueTree(OperationInfo::getValueTree());
+    comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::OPERATION] -> setSelectedId((int)operationTree.getPropertyAsValue(OperationInfo::operationID, nullptr).getValue() + 1);
+    comboBoxes[comboBoxIndex::OPERATION] -> addListener(this);
+    
     
     flexBox.items.add(FlexItem(100, 30).withMargin(10));
     auto &routeFlexItem = flexBox.items.getReference(flexBox.items.size() - 1);
@@ -53,10 +54,10 @@ OperationSelect::OperationSelect ()
     routeFlexItem.associatedComponent = routeBox;
     addChildComponent(routeBox);
     
-    comboBoxes[comboBoxIndex::ROUTE] -> addItemList(midiChannelInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::ROUTE] -> setSelectedId(1);
-    comboBoxes[comboBoxIndex::ROUTE] -> addListener(this);
     routeChannelTree = ValueTree(MidiChannelInfo::getRouteValueTree());
+    comboBoxes[comboBoxIndex::ROUTE] -> addItemList(midiChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::ROUTE] -> setSelectedId((int)operationTree.getPropertyAsValue(OperationInfo::operationID, nullptr).getValue() + 1);
+    comboBoxes[comboBoxIndex::ROUTE] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;

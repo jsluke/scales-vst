@@ -37,17 +37,17 @@ ScaleSelect::ScaleSelect ()
     initComboBox();
     initComboBox();
 
-    comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::NOTE] -> setSelectedId(1);
-    comboBoxes[comboBoxIndex::NOTE] -> addListener(this);
     noteTree = ValueTree(NoteInfo::getValueTree());
     noteTree.addListener(this);
+    comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::NOTE] -> setSelectedId((int)noteTree.getPropertyAsValue(NoteInfo::noteID, nullptr).getValue() + 1);
+    comboBoxes[comboBoxIndex::NOTE] -> addListener(this);
 
-    comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::SCALE] -> setSelectedId(1);
-    comboBoxes[comboBoxIndex::SCALE] -> addListener(this);
     scaleTree = ValueTree(ScaleInfo::getValueTree());
     scaleTree.addListener(this);
+    comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::SCALE] -> setSelectedId((int)scaleTree.getPropertyAsValue(ScaleInfo::scaleID, nullptr).getValue() + 1);
+    comboBoxes[comboBoxIndex::SCALE] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;

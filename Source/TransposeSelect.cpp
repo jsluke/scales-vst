@@ -48,16 +48,16 @@ TransposeSelect::TransposeSelect ()
     flexItemBox.associatedComponent = box;
     addAndMakeVisible(box);
 
+    transposeTree = ValueTree(TransposeInfo::getValueTree());
+    
     // TODO: ugly casting, refactor
-    ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> setToggleState(false, NotificationType::dontSendNotification);
+    ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> setToggleState(transposeTree.getPropertyAsValue(TransposeInfo::isEnabledID, nullptr).getValue(), NotificationType::dontSendNotification);
     ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> setButtonText("Enable Transpose");
     ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> addListener(this);
 
     ((ComboBox*)components[componentIndex::NOTE]) -> addItemList(noteInfo.getStringArray(), 1);
-    ((ComboBox*)components[componentIndex::NOTE]) -> setSelectedId(1);
+    ((ComboBox*)components[componentIndex::NOTE]) -> setSelectedId((int)transposeTree.getPropertyAsValue(TransposeInfo::transNoteID, nullptr).getValue() + 1);
     ((ComboBox*)components[componentIndex::NOTE]) -> addListener(this);
-    
-    transposeTree = ValueTree(TransposeInfo::getValueTree());
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;

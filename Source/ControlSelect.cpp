@@ -41,10 +41,10 @@ ControlSelect::ControlSelect ()
     flexItem.associatedComponent = box;
     addAndMakeVisible(box);
 
-    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(midiChannelInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId(1);
-    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
     controlChannelTree = ValueTree(MidiChannelInfo::getControlValueTree());
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(midiChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId((int)controlChannelTree.getPropertyAsValue(MidiChannelInfo::controlChannelID, nullptr).getValue() + 1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
