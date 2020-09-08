@@ -35,19 +35,19 @@ void ScalesAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhoseProperty
 {
     if (treeWhosePropertyHasChanged == noteTree && property == NoteInfo::noteID)
     {
-            currentScaleNote = noteTree[NoteInfo::noteID];
+        currentScaleNote = noteTree[NoteInfo::noteID];
     }
     else if (treeWhosePropertyHasChanged == controlChannelTree && property == MidiChannelInfo::controlChannelID)
     {
-             controlChannel = controlChannelTree[MidiChannelInfo::controlChannelID];
+         controlChannel = controlChannelTree[MidiChannelInfo::controlChannelID];
     }
     else if (treeWhosePropertyHasChanged == scaleTree && property == ScaleInfo::scaleID)
     {
-             currentScale = scaleTree[ScaleInfo::scaleID];
+         currentScale = scaleTree[ScaleInfo::scaleID];
     }
     else if (treeWhosePropertyHasChanged == operationTree && property == OperationInfo::operationID)
     {
-             operation = operationTree[OperationInfo::operationID];
+         operation = operationTree[OperationInfo::operationID];
     }
     else if (treeWhosePropertyHasChanged == transposeTree)
     {
@@ -57,7 +57,10 @@ void ScalesAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhoseProperty
         else if (property == TransposeInfo::transNoteID)
             transposeNote = transposeTree[TransposeInfo::transNoteID];
     }
-    
+    else if (treeWhosePropertyHasChanged == routeTree && property == MidiChannelInfo::routeChannelID)
+    {
+        routeChannel = routeTree[MidiChannelInfo::routeChannelID];
+    }
 }
 
 //==============================================================================
@@ -137,15 +140,21 @@ void ScalesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     scaleTree.addListener(this);
     transposeTree = ValueTree(TransposeInfo::getValueTree());
     transposeTree.addListener(this);
+    routeTree = ValueTree(MidiChannelInfo::getRouteValueTree());
+    routeTree.addListener(this);
     
     currentScaleNote = noteTree[NoteInfo::noteID];
     currentScale = scaleTree[ScaleInfo::scaleID];
     controlChannel = controlChannelTree[MidiChannelInfo::controlChannelID];
     operation = operationTree[OperationInfo::operationID];
     
-    for(int i=0; i<NoteInfo::NUM_NOTES; i++)
-        noteOnMap[i] = -1;
-    
+    for (int x=0; x<16; x++)
+    {
+        for (int y=0; y<128; y++)
+        {
+            noteOnMap[x][y] = NoteInfo::NO_NOTE;
+        }
+    }
 }
 
 void ScalesAudioProcessor::releaseResources()
@@ -248,15 +257,7 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         {
             output.addEvent(msg, sampleNum);
         } else if (scaleInfo.isNoteInScale(currentScale, noteToUse, msg.getNoteNumber())) {
-            int toSet = transpose(msg.getNoteNumber());
-            toSet = newToSet(msg, toSet);
-            setNoteMap(msg, toSet);
-            
-            if (shouldSkipNoteOff(msg, toSet))
-                continue;
-            
-            msg.setNoteNumber(toSet);
-            output.addEvent(msg, sampleNum);
+            addOutputNote(output, sampleNum, msg, msg.getChannel(), msg.getNoteNumber());
         } else {
             // TODO: refactor
             if (operation == OperationInfo::DROP.order)
@@ -264,41 +265,17 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                 if (msg.isNoteOn())
                     continue;
 
-                int toSet = transpose(msg.getNoteNumber());
-                toSet = newToSet(msg, toSet);
-                setNoteMap(msg, toSet);
-                
-                if (shouldSkipNoteOff(msg, toSet))
-                    continue;
-                
-                msg.setNoteNumber(toSet);
-                output.addEvent(msg, sampleNum);
+                addOutputNote(output, sampleNum, msg, msg.getChannel(), msg.getNoteNumber());
             }
             else if (operation == OperationInfo::UP.order)
             {
                 int toSet = scaleInfo.getNoteUp(currentScale, noteToUse, msg.getNoteNumber(), true);
-                toSet = transpose(toSet);
-                toSet = newToSet(msg, toSet);
-                setNoteMap(msg, toSet);
-                
-                if (shouldSkipNoteOff(msg, toSet))
-                    continue;
-                
-                msg.setNoteNumber(toSet);
-                output.addEvent(msg, sampleNum);
+                addOutputNote(output, sampleNum, msg, msg.getChannel(), toSet);
             }
             else if (operation == OperationInfo::DOWN.order)
             {
                 int toSet = scaleInfo.getNoteDown(currentScale, noteToUse, msg.getNoteNumber(), true);
-                toSet = transpose(toSet);
-                toSet = newToSet(msg, toSet);
-                setNoteMap(msg, toSet);
-                
-                if (shouldSkipNoteOff(msg, toSet))
-                    continue;
-                
-                msg.setNoteNumber(toSet);
-                output.addEvent(msg, sampleNum);
+                addOutputNote(output, sampleNum, msg, msg.getChannel(), toSet);
             }
             else if (operation == OperationInfo::RAND.order)
             {
@@ -307,28 +284,13 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                     toSet = scaleInfo.getNoteDown(currentScale, noteToUse, msg.getNoteNumber(), true);
                 else
                     toSet = scaleInfo.getNoteUp(currentScale, noteToUse, msg.getNoteNumber(), true);
-
-                toSet = transpose(toSet);
-                toSet = newToSet(msg, toSet);
-                setNoteMap(msg, toSet);
-
-                if (shouldSkipNoteOff(msg, toSet))
-                    continue;
-
-                msg.setNoteNumber(toSet);
-                output.addEvent(msg, sampleNum);
+                
+                addOutputNote(output, sampleNum, msg, msg.getChannel(), toSet);
             }
             if (operation == OperationInfo::ROUTE.order)
             {
-                int toSet = transpose(msg.getNoteNumber());
-                toSet = newToSet(msg, toSet);
-                setNoteMap(msg, toSet);
-
-                if (shouldSkipNoteOff(msg, toSet))
-                    continue;
-
-                msg.setNoteNumber(toSet);
-                output.addEvent(msg, sampleNum);
+                if (routeChannel > 0)
+                    addOutputNote(output, sampleNum, msg, routeChannel, msg.getNoteNumber());
             }
         }
     }
@@ -336,23 +298,42 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     midiMessages.swapWith(output);
 }
 
-void ScalesAudioProcessor::setNoteMap(MidiMessage msg, int toSet)
+void ScalesAudioProcessor::addOutputNote(MidiBuffer &output, int sampleNum, MidiMessage &msg, int channelToSet, int noteToSet)
 {
-    if (msg.isNoteOn())
-        noteOnMap[msg.getNoteNumber()] = toSet;
-    else if (msg.isNoteOff())
-        noteOnMap[msg.getNoteNumber()] = -1;
+    noteToSet = transpose(noteToSet);
+    NoteOnData toSet = newToSet(msg, channelToSet, noteToSet);
+    setNoteMap(msg, toSet);
+
+    if (shouldSkipNoteOff(msg, toSet))
+        return;
+
+    msg.setChannel(toSet.channel);
+    msg.setNoteNumber(toSet.note);
+    output.addEvent(msg, sampleNum);
 }
 
-bool ScalesAudioProcessor::shouldSkipNoteOff(MidiMessage msg, int toSet)
+void ScalesAudioProcessor::setNoteMap(MidiMessage msg, NoteOnData toSet)
+{
+    const NoteOnData msgData = NoteOnData(msg);
+    
+    if (msg.isNoteOn())
+        noteOnMap[msgData.channel][msgData.note] = toSet;
+    else if (msg.isNoteOff())
+        noteOnMap[msgData.channel][msgData.note] = NoteInfo::NO_NOTE;
+}
+
+bool ScalesAudioProcessor::shouldSkipNoteOff(MidiMessage msg, NoteOnData toSet)
 {
     if (!msg.isNoteOff())
         return false;
     
-    for (int i=0; i<128; i++)
+    for (int x=0; x<16; x++)
     {
-        if (noteOnMap[i] == toSet)
-            return true;
+        for (int y=0; y<128; y++)
+        {
+            if (noteOnMap[x][y] == toSet)
+                return true;
+        }
     }
     
     return false;
@@ -360,10 +341,13 @@ bool ScalesAudioProcessor::shouldSkipNoteOff(MidiMessage msg, int toSet)
 
 // check if note OFF value needs to be transposed due to change of operation setting.
 // prevents note staying on indefinitely
-int ScalesAudioProcessor::newToSet(MidiMessage msg, int toSet)
+NoteOnData ScalesAudioProcessor::newToSet(MidiMessage msg, int channelToSet, int noteToSet)
 {
-    if (msg.isNoteOff() && noteOnMap[msg.getNoteNumber()] != toSet)
-        return noteOnMap[msg.getNoteNumber()];
+    const NoteOnData msgData = NoteOnData(msg);
+    const NoteOnData toSet = NoteOnData(channelToSet, noteToSet);
+    
+    if (msg.isNoteOff() && !(noteOnMap[msgData.channel][msgData.note] == toSet))
+        return noteOnMap[msgData.channel][msgData.note];
     return toSet;
 }
 

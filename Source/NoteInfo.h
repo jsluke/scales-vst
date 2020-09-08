@@ -22,10 +22,36 @@ struct Note
     Note(int order, String localizedString) : order(order), localizedString(localizedString) {};
 };
 
+// TODO: move this elsewhere?
+struct NoteOnData
+{
+    int channel;
+    int note;
+    
+    NoteOnData() {};
+    NoteOnData(int channel, int note) : channel(channel), note(note) {};
+    NoteOnData(MidiMessage msg)
+    {
+        channel = msg.getChannel();
+        note = msg.getNoteNumber();
+    }
+    
+    bool operator==(const NoteOnData& other) const
+    {
+        return channel == other.channel && note == other.note;
+    }
+    
+    bool operator>(const NoteOnData& other) const
+    {
+        return channel < other.channel || (channel == other.channel && note < other.note);
+    }
+};
+
 class NoteInfo
 {
 public:
     static const int NUM_NOTES = 12;
+    static const NoteOnData NO_NOTE;
     static const Identifier noteID;
     
     static ValueTree& getValueTree();

@@ -10,6 +10,8 @@
 
 #include "NoteInfo.h"
 
+const NoteOnData NoteInfo::NO_NOTE = NoteOnData(-1, -1);
+
 const Identifier NoteInfo::noteTreeID ("NoteTree");
 const Identifier NoteInfo::noteID ("NoteID");
 

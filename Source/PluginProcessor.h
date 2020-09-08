@@ -69,9 +69,10 @@ private:
     
     //==============================================================================
     void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
-    void setNoteMap(MidiMessage msg, int toSet);
-    bool shouldSkipNoteOff(MidiMessage msg, int toSet);
-    int newToSet(MidiMessage msg, int toSet);
+    void addOutputNote(MidiBuffer &output, int sampleNum, MidiMessage &msg, int channelToSet, int noteToSet);
+    void setNoteMap(MidiMessage msg, NoteOnData toSet);
+    bool shouldSkipNoteOff(MidiMessage msg, NoteOnData toSet);
+    NoteOnData newToSet(MidiMessage msg, int channelToSet, int noteToSet);
     int transpose(int noteNumber);
     
     //==============================================================================
@@ -79,19 +80,23 @@ private:
     int currentScale;
     int controlChannel;
     int operation;
+    int routeChannel;
     int majorOctave = 3;
     int minorOctave = 4;
     
     int transposeNote;
     bool transposeEnabled;
     
-    int noteOnMap[128];
+    // [midi channels][note values]
+     NoteOnData noteOnMap[16][128];
+    //std::unordered_map<NoteOnData, NoteOnData> noteOnMap;
     
     ValueTree controlChannelTree;
     ValueTree noteTree;
     ValueTree scaleTree;
     ValueTree operationTree;
     ValueTree transposeTree;
+    ValueTree routeTree;
     
     ScaleInfo scaleInfo;
     
