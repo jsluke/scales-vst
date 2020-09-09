@@ -56,9 +56,10 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     FlexBox flexBox;
-    OwnedArray<Component> components;
-
-    enum componentIndex {ONOFF_TOGGLE, NOTE};
+    OwnedArray<ComboBox> comboBoxes;
+    enum comboIndex {NOTE};
+    OwnedArray<ToggleButton> toggleButtons;
+    enum toggleIndex {ONOFF_TOGGLE};
 
     NoteInfo noteInfo;
     ValueTree transposeTree;

@@ -37,27 +37,26 @@ TransposeSelect::TransposeSelect ()
     flexBox.items.add(FlexItem(100, 30).withMargin(10));
     auto &flexItemToggle = flexBox.items.getReference(flexBox.items.size() - 1);
     ToggleButton* toggle = new ToggleButton();
-    components.add(toggle);
+    toggleButtons.add(toggle);
     flexItemToggle.associatedComponent = toggle;
     addAndMakeVisible(toggle);
 
     flexBox.items.add(FlexItem(100, 30).withMargin(10));
     auto &flexItemBox = flexBox.items.getReference(flexBox.items.size() - 1);
     ComboBox* box = new ComboBox();
-    components.add(box);
+    comboBoxes.add(box);
     flexItemBox.associatedComponent = box;
     addAndMakeVisible(box);
 
     transposeTree = ValueTree(TransposeInfo::getValueTree());
     
-    // TODO: ugly casting, refactor
-    ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> setToggleState(transposeTree.getPropertyAsValue(TransposeInfo::isEnabledID, nullptr).getValue(), NotificationType::dontSendNotification);
-    ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> setButtonText("Enable Transpose");
-    ((ToggleButton*)components[componentIndex::ONOFF_TOGGLE]) -> addListener(this);
+    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> setToggleState(transposeTree.getPropertyAsValue(TransposeInfo::isEnabledID, nullptr).getValue(), NotificationType::dontSendNotification);
+    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> setButtonText("Enable Transpose");
+    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> addListener(this);
 
-    ((ComboBox*)components[componentIndex::NOTE]) -> addItemList(noteInfo.getStringArray(), 1);
-    ((ComboBox*)components[componentIndex::NOTE]) -> setSelectedId((int)transposeTree.getPropertyAsValue(TransposeInfo::transNoteID, nullptr).getValue() + 1);
-    ((ComboBox*)components[componentIndex::NOTE]) -> addListener(this);
+    comboBoxes[comboIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
+    comboBoxes[comboIndex::NOTE] -> setSelectedId((int)transposeTree.getPropertyAsValue(TransposeInfo::transNoteID, nullptr).getValue() + 1);
+    comboBoxes[comboIndex::NOTE] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -111,7 +110,7 @@ void TransposeSelect::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void TransposeSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 {
-    if (comboBoxThatHasChanged == (ComboBox*)(components[componentIndex::NOTE]))
+    if (comboBoxThatHasChanged == comboBoxes[comboIndex::NOTE])
         transposeTree.setProperty(TransposeInfo::transNoteID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
 };
 
@@ -122,7 +121,7 @@ void TransposeSelect::buttonClicked(Button *buttonThatWasClicked)
 
 void TransposeSelect::buttonStateChanged(Button *buttonThatHasChanged)
 {
-    if (buttonThatHasChanged == (Button*)(components[componentIndex::ONOFF_TOGGLE]))
+    if (buttonThatHasChanged == toggleButtons[toggleIndex::ONOFF_TOGGLE])
         transposeTree.setProperty(TransposeInfo::isEnabledID, buttonThatHasChanged -> getToggleStateValue(), nullptr);
 
 };
