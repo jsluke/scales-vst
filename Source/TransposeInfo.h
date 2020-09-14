@@ -15,8 +15,15 @@ class TransposeInfo
 {
     
 public:
-    static const Identifier isEnabledID;
-    static const Identifier transNoteID;
+    static const Identifier isEnabledID; //TODO: remove
+    static const String isEnabledParam;
+    static const String isEnabledParamText;
+    static const bool   isEnabledParamDefault;
+    
+    static const Identifier transNoteID; //TODO: remove
+    static const String noteParam;
+    static const String noteParamText;
+    static const int    noteParamDefault;
     
     static ValueTree& getValueTree();
     

@@ -32,11 +32,15 @@ public:
     static const Operation ROUTE;
     static const Identifier operationID;
     
+    static const String operationParam;
+    static const String operationParamText;
+    static const int    operationParamDefault;
+    
     static ValueTree& getValueTree();
     
     OperationInfo();
     
-    StringArray getStringArray();
+    static StringArray getStringArray();
 
 private:
     static const Identifier operationTreeID;

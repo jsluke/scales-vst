@@ -54,14 +54,17 @@ public:
     static const NoteOnData NO_NOTE;
     static const Identifier noteID;
     
+    static const String noteParam;
+    static const String noteParamText;
+    static const int    noteParamDefault;
+    
     static ValueTree& getValueTree();
     
+    static StringArray getStringArray();
     static int getOctave(int note);
     static int getNoteInOctave(int note);
     
     NoteInfo();
-    
-    StringArray getStringArray();
 
 private:
     static const Identifier noteTreeID;

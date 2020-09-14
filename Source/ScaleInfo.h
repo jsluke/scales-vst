@@ -32,11 +32,16 @@ public:
     
     static const Identifier scaleID;
     
+    static const String scaleParam;
+    static const String scaleParamText;
+    static const int    scaleParamDefault;
+    
     static ValueTree& getValueTree();
+    
+    static StringArray getStringArray();
     
     ScaleInfo();
     
-    StringArray getStringArray();
     bool isNoteInScale(int scaleID, int scaleNote, int note);
     int getNoteUp(int scaleID, int scaleNote, int note, bool getNoteDownNotFound);
     int getNoteDown(int scaleID, int scaleNote, int note, bool getNoteUpNotFound);

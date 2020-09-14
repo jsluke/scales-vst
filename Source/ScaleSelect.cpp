@@ -38,16 +38,10 @@ ScaleSelect::ScaleSelect ()
     initComboBox();
 
     noteTree = ValueTree(NoteInfo::getValueTree());
-    noteTree.addListener(this);
     comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::NOTE] -> setSelectedId((int)noteTree.getPropertyAsValue(NoteInfo::noteID, nullptr).getValue() + 1);
-    comboBoxes[comboBoxIndex::NOTE] -> addListener(this);
 
     scaleTree = ValueTree(ScaleInfo::getValueTree());
-    scaleTree.addListener(this);
     comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::SCALE] -> setSelectedId((int)scaleTree.getPropertyAsValue(ScaleInfo::scaleID, nullptr).getValue() + 1);
-    comboBoxes[comboBoxIndex::SCALE] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -109,29 +103,11 @@ void ScaleSelect::initComboBox()
     addAndMakeVisible(box);
 }
 
-void ScaleSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
+void ScaleSelect::connectState(AudioProcessorValueTreeState& parameters)
 {
-    if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::NOTE])
-        noteTree.setProperty(NoteInfo::noteID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
-    else if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::SCALE])
-        scaleTree.setProperty(ScaleInfo::scaleID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+    noteAttachment.reset(new AudioProcessorValueTreeState::ComboBoxAttachment(parameters, NoteInfo::noteParam, *comboBoxes[comboBoxIndex::NOTE]));
 
-}
-
-void ScaleSelect::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
-{
-    if (treeWhosePropertyHasChanged == noteTree && property == NoteInfo::noteID)
-        updateComboBoxAsync(comboBoxes[comboBoxIndex::NOTE], (int)noteTree[NoteInfo::noteID] + 1);
-
-    else if (treeWhosePropertyHasChanged == scaleTree && property == ScaleInfo::scaleID)
-        updateComboBoxAsync(comboBoxes[comboBoxIndex::SCALE], (int)scaleTree[ScaleInfo::scaleID] + 1);
-}
-
-void ScaleSelect::updateComboBoxAsync(ComboBox* box, int newID)
-{
-    MessageManager::callAsync( [=]() {
-        box -> setSelectedId(newID);
-    });
+    scaleAttachment.reset(new AudioProcessorValueTreeState::ComboBoxAttachment(parameters, ScaleInfo::scaleParam, *comboBoxes[comboBoxIndex::SCALE]));
 }
 //[/MiscUserCode]
 
@@ -146,10 +122,9 @@ void ScaleSelect::updateComboBoxAsync(ComboBox* box, int newID)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="ScaleSelect" componentName=""
-                 parentClasses="public Component, public ComboBox::Listener, public ValueTree::Listener"
-                 constructorParams="" variableInitialisers="" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="500"
-                 initialHeight="100">
+                 parentClasses="public Component" constructorParams="" variableInitialisers=""
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="500" initialHeight="100">
   <BACKGROUND backgroundColour="ff3e4c54"/>
 </JUCER_COMPONENT>
 

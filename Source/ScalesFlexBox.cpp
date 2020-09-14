@@ -36,28 +36,28 @@ ScalesFlexBox::ScalesFlexBox ()
     //[UserPreSize]
     flexBox.items.add(FlexItem(500, 100).withMargin(5));
     auto &flexItemScale = flexBox.items.getReference(flexBox.items.size() - 1);
-    auto *scaleSelect = new ScaleSelect();
+    scaleSelect = new ScaleSelect();
     panels.add(scaleSelect);
     flexItemScale.associatedComponent = scaleSelect;
     addAndMakeVisible(scaleSelect);
 
     flexBox.items.add(FlexItem(500, 100).withMargin(5));
     auto &flexItemTranspose = flexBox.items.getReference(flexBox.items.size() - 1);
-    auto *transposeSelect = new TransposeSelect();
+    transposeSelect = new TransposeSelect();
     panels.add(transposeSelect);
     flexItemTranspose.associatedComponent = transposeSelect;
     addAndMakeVisible(transposeSelect);
 
     flexBox.items.add(FlexItem(500, 100).withMargin(5));
     auto &flexItemOp = flexBox.items.getReference(flexBox.items.size() - 1);
-    auto *operationSelect = new OperationSelect();
+    operationSelect = new OperationSelect();
     panels.add(operationSelect);
     flexItemOp.associatedComponent = operationSelect;
     addAndMakeVisible(operationSelect);
 
     flexBox.items.add(FlexItem(500, 100).withMargin(5));
     auto &flexItemControl = flexBox.items.getReference(flexBox.items.size() - 1);
-    auto *controlSelect = new ControlSelect();
+    controlSelect = new ControlSelect();
     panels.add(controlSelect);
     flexItemControl.associatedComponent = controlSelect;
     addAndMakeVisible(controlSelect);
@@ -113,6 +113,13 @@ void ScalesFlexBox::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
+void ScalesFlexBox::connectState(AudioProcessorValueTreeState& parameters)
+{
+    scaleSelect -> connectState(parameters);
+    operationSelect -> connectState(parameters);
+    controlSelect -> connectState(parameters);
+    transposeSelect -> connectState(parameters);
+}
 //[/MiscUserCode]
 
 

@@ -19,6 +19,10 @@ const Operation OperationInfo::ROUTE = Operation(4, TRANS("Route"));
 const Identifier OperationInfo::operationTreeID ("OperationTree");
 const Identifier OperationInfo::operationID ("OperationID");
 
+const String OperationInfo::operationParam = "OperationParam";
+const String OperationInfo::operationParamText = TRANS("Transform Operation");
+const int OperationInfo::operationParamDefault = 0;
+
 ValueTree OperationInfo::getInitialValueTree()
 {
     ValueTree tree = ValueTree(operationTreeID);
@@ -45,7 +49,10 @@ OperationInfo::OperationInfo()
 StringArray OperationInfo::getStringArray()
 {
     StringArray options;
-    for (Operation operation : operationOptions)
-        options.add(operation.localizedString);
+    options.add(DROP.localizedString);
+    options.add(UP.localizedString);
+    options.add(DOWN.localizedString);
+    options.add(RAND.localizedString);
+    options.add(ROUTE.localizedString);
     return options;
 }

@@ -23,7 +23,7 @@
 //==============================================================================
 /**
 */
-class ScalesAudioProcessor  : public AudioProcessor, public ValueTree::Listener
+class ScalesAudioProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
@@ -68,7 +68,6 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScalesAudioProcessor)
     
     //==============================================================================
-    void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
     void addOutputNote(MidiBuffer &output, int sampleNum, MidiMessage &msg, int channelToSet, int noteToSet);
     void setNoteMap(MidiMessage msg, NoteOnData toSet);
     bool shouldSkipNoteOff(MidiMessage msg, NoteOnData toSet);
@@ -76,29 +75,32 @@ private:
     int transpose(int noteNumber);
     
     //==============================================================================
+    AudioProcessorValueTreeState parameters;
+    
+    AudioParameterChoice* scaleNoteParam;
+    AudioParameterChoice* scaleTypeParam;
+    AudioParameterChoice* controlChannelParam;
+    AudioParameterChoice* operationParam;
+    AudioParameterChoice* routeChannelParam;
+    int majorOctave = 3;
+    int minorOctave = 4;
+    
+    AudioParameterChoice* transposeNoteParam;
+    AudioParameterBool* transposeEnabledParam;
+    
     int currentScaleNote;
     int currentScale;
     int controlChannel;
     int operation;
     int routeChannel;
-    int majorOctave = 3;
-    int minorOctave = 4;
-    
     int transposeNote;
     bool transposeEnabled;
     
     // [midi channels][note values]
      NoteOnData noteOnMap[16][128];
-    //std::unordered_map<NoteOnData, NoteOnData> noteOnMap;
-    
-    ValueTree controlChannelTree;
-    ValueTree noteTree;
-    ValueTree scaleTree;
-    ValueTree operationTree;
-    ValueTree transposeTree;
-    ValueTree routeTree;
     
     ScaleInfo scaleInfo;
+    NoteInfo noteInfo;
     
     Random random;
 };

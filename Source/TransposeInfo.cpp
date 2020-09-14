@@ -14,6 +14,14 @@ const Identifier TransposeInfo::transTreeID ("TransposeTree");
 const Identifier TransposeInfo::isEnabledID ("isTransposeEnabledID");
 const Identifier TransposeInfo::transNoteID ("TransposeNoteID");
 
+const String TransposeInfo::isEnabledParam = "TransposeIsEnabledParam";
+const String TransposeInfo::isEnabledParamText = TRANS("Transpose Enabled");
+const bool   TransposeInfo::isEnabledParamDefault = false;
+
+const String TransposeInfo::noteParam = "TransposeNoteParam";
+const String TransposeInfo::noteParamText = TRANS("Transpose From Note");
+const int    TransposeInfo::noteParamDefault = 0;
+
 ValueTree TransposeInfo::getInitialValueTree()
 {
     ValueTree tree = ValueTree(transTreeID);

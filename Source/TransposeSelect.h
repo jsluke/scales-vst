@@ -35,9 +35,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class TransposeSelect  : public Component,
-                         public ComboBox::Listener,
-                         public Button::Listener
+class TransposeSelect  : public Component
 {
 public:
     //==============================================================================
@@ -46,6 +44,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void connectState(AudioProcessorValueTreeState& parameters);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -56,17 +55,17 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     FlexBox flexBox;
-    OwnedArray<ComboBox> comboBoxes;
+
     enum comboIndex {NOTE};
-    OwnedArray<ToggleButton> toggleButtons;
+    OwnedArray<ComboBox> comboBoxes;
+
     enum toggleIndex {ONOFF_TOGGLE};
+    OwnedArray<ToggleButton> toggleButtons;
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> onoffAttachment;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> noteAttachment;
 
     NoteInfo noteInfo;
     ValueTree transposeTree;
-
-    void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
-    void buttonClicked(Button *buttonThatWasClicked) override;
-    void buttonStateChanged(Button *buttonThatHasChanged) override;
     //[/UserVariables]
 
     //==============================================================================

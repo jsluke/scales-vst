@@ -12,11 +12,12 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-ScalesAudioProcessorEditor::ScalesAudioProcessorEditor (ScalesAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+ScalesAudioProcessorEditor::ScalesAudioProcessorEditor (ScalesAudioProcessor& p, AudioProcessorValueTreeState& parameters)
+    : AudioProcessorEditor (&p), processor (p), parameters (parameters)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
+    flexBox.connectState(parameters);
     addAndMakeVisible(flexBox);
     setSize (510, 440);
 }

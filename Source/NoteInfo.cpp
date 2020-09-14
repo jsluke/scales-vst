@@ -15,6 +15,10 @@ const NoteOnData NoteInfo::NO_NOTE = NoteOnData(-1, -1);
 const Identifier NoteInfo::noteTreeID ("NoteTree");
 const Identifier NoteInfo::noteID ("NoteID");
 
+const String NoteInfo::noteParam = "ScaleNoteParam";
+const String NoteInfo::noteParamText = TRANS("Scale Note");
+const int NoteInfo::noteParamDefault = 0;
+
 ValueTree NoteInfo::getInitialValueTree()
 {
     ValueTree tree = ValueTree(noteTreeID);
@@ -52,8 +56,8 @@ NoteInfo::NoteInfo()
 StringArray NoteInfo::getStringArray()
 {
     StringArray options;
-    for (Note note : noteOptions)
-        options.add(note.localizedString);
+    for (int i=0; i<NUM_NOTES; i++)
+        options.add(notes[i]);
     return options;
 }
 

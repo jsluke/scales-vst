@@ -20,7 +20,7 @@
 class ScalesAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
-    ScalesAudioProcessorEditor (ScalesAudioProcessor&);
+    ScalesAudioProcessorEditor (ScalesAudioProcessor&, AudioProcessorValueTreeState& parameters);
     ~ScalesAudioProcessorEditor();
 
     //==============================================================================
@@ -31,6 +31,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     ScalesAudioProcessor& processor;
+    AudioProcessorValueTreeState& parameters;
     ScalesFlexBox flexBox;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ScalesAudioProcessorEditor)

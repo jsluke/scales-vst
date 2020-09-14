@@ -50,6 +50,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void connectState(AudioProcessorValueTreeState& parameters);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -60,6 +61,10 @@ public:
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     FlexBox flexBox;
+    TransposeSelect* transposeSelect;
+    ScaleSelect* scaleSelect;
+    OperationSelect* operationSelect;
+    ControlSelect* controlSelect;
     OwnedArray<Component> panels;
     //[/UserVariables]
 

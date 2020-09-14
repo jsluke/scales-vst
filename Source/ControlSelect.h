@@ -34,8 +34,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class ControlSelect  : public Component,
-                       public ComboBox::Listener
+class ControlSelect  : public Component
 {
 public:
     //==============================================================================
@@ -44,6 +43,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void connectState(AudioProcessorValueTreeState& parameters);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -59,7 +59,7 @@ private:
     MidiChannelInfo midiChannelInfo;
     ValueTree controlChannelTree;
 
-    void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> controlAttachment;
     //[/UserVariables]
 
     //==============================================================================

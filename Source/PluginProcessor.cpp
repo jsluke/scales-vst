@@ -13,7 +13,6 @@
 
 //==============================================================================
 ScalesAudioProcessor::ScalesAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
@@ -21,46 +20,50 @@ ScalesAudioProcessor::ScalesAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
-#endif
+                       ),
+     parameters (*this, nullptr, Identifier("ScalesParams"),
+                   {
+                        std::make_unique<AudioParameterChoice> (NoteInfo::noteParam,
+                                                                NoteInfo::noteParamText,
+                                                                NoteInfo::getStringArray(),
+                                                                NoteInfo::noteParamDefault),
+                        std::make_unique<AudioParameterChoice> (ScaleInfo::scaleParam,
+                                                                ScaleInfo::scaleParamText,
+                                                                ScaleInfo::getStringArray(),
+                                                                ScaleInfo::scaleParamDefault),
+                        std::make_unique<AudioParameterBool> (TransposeInfo::isEnabledParam,
+                                                              TransposeInfo::isEnabledParamText,
+                                                              TransposeInfo::isEnabledParamDefault),
+                        std::make_unique<AudioParameterChoice> (TransposeInfo::noteParam,
+                                                                TransposeInfo::noteParamText,
+                                                                NoteInfo::getStringArray(),
+                                                                TransposeInfo::noteParamDefault),
+                        std::make_unique<AudioParameterChoice> (OperationInfo::operationParam,
+                                                                OperationInfo::operationParamText,
+                                                                OperationInfo::getStringArray(),
+                                                                OperationInfo::operationParamDefault),
+                        std::make_unique<AudioParameterChoice> (MidiChannelInfo::routeChannelParam,
+                                                                MidiChannelInfo::routeChannelParamText,
+                                                                MidiChannelInfo::getStringArray(),
+                                                                MidiChannelInfo::routeChannelParamDefault),
+                        std::make_unique<AudioParameterChoice> (MidiChannelInfo::controlChannelParam,
+                                                                MidiChannelInfo::controlChannelParamText,
+                                                                MidiChannelInfo::getStringArray(),
+                                                                MidiChannelInfo::controlChannelParamDefault)
+                                                 
+                   })
 {
+    scaleNoteParam = (AudioParameterChoice*)parameters.getParameter(NoteInfo::noteParam);
+    scaleTypeParam = (AudioParameterChoice*)parameters.getParameter(ScaleInfo::scaleParam);
+    controlChannelParam = (AudioParameterChoice*)parameters.getParameter(MidiChannelInfo::controlChannelParam);
+    operationParam = (AudioParameterChoice*)parameters.getParameter(OperationInfo::operationParam);
+    routeChannelParam = (AudioParameterChoice*)parameters.getParameter(MidiChannelInfo::routeChannelParam);
+    transposeNoteParam = (AudioParameterChoice*)parameters.getParameter(TransposeInfo::noteParam);
+    transposeEnabledParam = (AudioParameterBool*)parameters.getParameter(TransposeInfo::isEnabledParam);
 }
 
 ScalesAudioProcessor::~ScalesAudioProcessor()
 {
-}
-
-//==============================================================================
-void ScalesAudioProcessor::valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property)
-{
-    if (treeWhosePropertyHasChanged == noteTree && property == NoteInfo::noteID)
-    {
-        currentScaleNote = noteTree[NoteInfo::noteID];
-    }
-    else if (treeWhosePropertyHasChanged == controlChannelTree && property == MidiChannelInfo::controlChannelID)
-    {
-         controlChannel = controlChannelTree[MidiChannelInfo::controlChannelID];
-    }
-    else if (treeWhosePropertyHasChanged == scaleTree && property == ScaleInfo::scaleID)
-    {
-         currentScale = scaleTree[ScaleInfo::scaleID];
-    }
-    else if (treeWhosePropertyHasChanged == operationTree && property == OperationInfo::operationID)
-    {
-         operation = operationTree[OperationInfo::operationID];
-    }
-    else if (treeWhosePropertyHasChanged == transposeTree)
-    {
-        if (property == TransposeInfo::isEnabledID)
-            transposeEnabled = transposeTree[TransposeInfo::isEnabledID];
-        
-        else if (property == TransposeInfo::transNoteID)
-            transposeNote = transposeTree[TransposeInfo::transNoteID];
-    }
-    else if (treeWhosePropertyHasChanged == routeTree && property == MidiChannelInfo::routeChannelID)
-    {
-        routeChannel = routeTree[MidiChannelInfo::routeChannelID];
-    }
 }
 
 //==============================================================================
@@ -130,23 +133,6 @@ void ScalesAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    noteTree = ValueTree(NoteInfo::getValueTree());
-    noteTree.addListener(this);
-    controlChannelTree = ValueTree(MidiChannelInfo::getControlValueTree());
-    controlChannelTree.addListener(this);
-    operationTree = ValueTree(OperationInfo::getValueTree());
-    operationTree.addListener(this);
-    scaleTree = ValueTree(ScaleInfo::getValueTree());
-    scaleTree.addListener(this);
-    transposeTree = ValueTree(TransposeInfo::getValueTree());
-    transposeTree.addListener(this);
-    routeTree = ValueTree(MidiChannelInfo::getRouteValueTree());
-    routeTree.addListener(this);
-    
-    currentScaleNote = noteTree[NoteInfo::noteID];
-    currentScale = scaleTree[ScaleInfo::scaleID];
-    controlChannel = controlChannelTree[MidiChannelInfo::controlChannelID];
-    operation = operationTree[OperationInfo::operationID];
     
     for (int x=0; x<16; x++)
     {
@@ -216,9 +202,18 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
 //    }
     
     MidiMessage msg;
-    int sampleNum;
     MidiBuffer output;
+    int sampleNum;
+    
+    currentScaleNote = scaleNoteParam->getIndex();
+    currentScale = scaleTypeParam->getIndex();
+    controlChannel = controlChannelParam->getIndex();
+    operation = operationParam->getIndex();
+    routeChannel = routeChannelParam->getIndex();
+    transposeNote = transposeNoteParam->getIndex();
+    transposeEnabled = transposeEnabledParam->get();
     int noteToUse = transposeEnabled ? transposeNote : currentScaleNote;
+
 
     for (MidiBuffer::Iterator it(midiMessages); it.getNextEvent(msg, sampleNum);)
     {
@@ -230,17 +225,13 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                 switch (NoteInfo::getOctave(msg.getNoteNumber()))
                 {
                     case 3:
-                        currentScale = ScaleInfo::MAJOR.order;
-                        scaleTree.setProperty(ScaleInfo::scaleID, ScaleInfo::MAJOR.order, nullptr);
-                        currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
-                        noteTree.setProperty(NoteInfo::noteID, currentScaleNote, nullptr);
+                        *scaleTypeParam = ScaleInfo::MAJOR.order;
+                        *scaleNoteParam = NoteInfo::getNoteInOctave(msg.getNoteNumber());
                         break;
 
                     case 4:
-                        currentScale = ScaleInfo::MINOR.order;
-                        scaleTree.setProperty(ScaleInfo::scaleID, ScaleInfo::MINOR.order, nullptr);
-                        currentScaleNote = NoteInfo::getNoteInOctave(msg.getNoteNumber());
-                        noteTree.setProperty(NoteInfo::noteID, currentScaleNote, nullptr);
+                        *scaleTypeParam = ScaleInfo::MINOR.order;
+                        *scaleNoteParam = NoteInfo::getNoteInOctave(msg.getNoteNumber());
                         break;
 
                     default:
@@ -367,7 +358,7 @@ bool ScalesAudioProcessor::hasEditor() const
 
 AudioProcessorEditor* ScalesAudioProcessor::createEditor()
 {
-    return new ScalesAudioProcessorEditor (*this);
+    return new ScalesAudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================

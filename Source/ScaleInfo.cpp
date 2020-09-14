@@ -16,6 +16,10 @@ const Scale ScaleInfo::MINOR = Scale(1, TRANS("Minor"));
 const Identifier ScaleInfo::scaleTreeID ("ScaleTree");
 const Identifier ScaleInfo::scaleID ("ScaleID");
 
+const String ScaleInfo::scaleParam = "ScaleParam";
+const String ScaleInfo::scaleParamText = TRANS("Scale Type");
+const int ScaleInfo::scaleParamDefault = 0;
+
 ValueTree ScaleInfo::getInitialValueTree()
 {
     ValueTree tree = ValueTree(scaleTreeID);
@@ -39,8 +43,8 @@ ScaleInfo::ScaleInfo()
 StringArray ScaleInfo::getStringArray()
 {
     StringArray options;
-    for (Scale scale : scaleOptions)
-        options.add(scale.localizedString);
+    options.add(MAJOR.localizedString);
+    options.add(MINOR.localizedString);
     return options;
 }
 

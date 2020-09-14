@@ -45,6 +45,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void connectState(AudioProcessorValueTreeState& parameters);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -62,6 +63,9 @@ private:
     MidiChannelInfo midiChannelInfo;
     ValueTree operationTree;
     ValueTree routeChannelTree;
+
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> operationAttachment;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> routeAttachment;
 
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
     void updateVisibleComboBoxAsync(ComboBox* box, bool isVisible);

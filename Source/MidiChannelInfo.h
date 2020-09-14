@@ -30,13 +30,22 @@ public:
     static const Identifier controlChannelID;
     static ValueTree& getControlValueTree();
     
+    static const String controlChannelParam;
+    static const String controlChannelParamText;
+    static const int    controlChannelParamDefault;
+    
     static const Identifier routeChannelID;
     static ValueTree& getRouteValueTree();
+    
+    static const String routeChannelParam;
+    static const String routeChannelParamText;
+    static const int    routeChannelParamDefault;
+    
+    static StringArray getStringArray();
     
     MidiChannelInfo();
     
     MidiChannel getChannel(int optionID);
-    StringArray getStringArray();
 
 private:
     static const Identifier controlChannelTreeID;

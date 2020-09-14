@@ -13,8 +13,16 @@
 const Identifier MidiChannelInfo::controlChannelTreeID ("ControlChannelTree");
 const Identifier MidiChannelInfo::controlChannelID ("ControlChannelID");
 
+const String MidiChannelInfo::controlChannelParam = "ControlChannelParam";
+const String MidiChannelInfo::controlChannelParamText = TRANS("MIDI Control Channel");
+const int    MidiChannelInfo::controlChannelParamDefault = 0;
+
 const Identifier MidiChannelInfo::routeChannelTreeID ("RouteChannelTree");
 const Identifier MidiChannelInfo::routeChannelID ("RouteChannelID");
+
+const String MidiChannelInfo::routeChannelParam = "RouteChannelParam";
+const String MidiChannelInfo::routeChannelParamText = TRANS("Route Option MIDI Channel");
+const int    MidiChannelInfo::routeChannelParamDefault = 0;
 
 ValueTree MidiChannelInfo::getInitialControlValueTree()
 {
@@ -57,8 +65,11 @@ MidiChannel MidiChannelInfo::getChannel(int optionID)
 StringArray MidiChannelInfo::getStringArray()
 {
     StringArray options;
-    for (MidiChannel channel : channelOptions)
-        options.add(channel.localizedString);
+    options.add(TRANS("None"));
+    
+    // there are 16 MIDI channels per port
+    for (int i=1; i <= 16; i++)
+        options.add(std::to_string(i));
     
     return options;
 }

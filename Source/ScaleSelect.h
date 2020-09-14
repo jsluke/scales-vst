@@ -35,9 +35,7 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class ScaleSelect  : public Component,
-                     public ComboBox::Listener,
-                     public ValueTree::Listener
+class ScaleSelect  : public Component
 {
 public:
     //==============================================================================
@@ -46,6 +44,7 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void connectState(AudioProcessorValueTreeState& parameters);
     //[/UserMethods]
 
     void paint (Graphics& g) override;
@@ -66,9 +65,9 @@ private:
     ValueTree noteTree;
     ValueTree scaleTree;
 
-    void valueTreePropertyChanged(ValueTree &treeWhosePropertyHasChanged, const Identifier &property) override;
-    void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
-    void updateComboBoxAsync(ComboBox* box, int newID);
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> noteAttachment;
+    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> scaleAttachment;
+
     void initComboBox();
     //[/UserVariables]
 

@@ -48,15 +48,8 @@ TransposeSelect::TransposeSelect ()
     flexItemBox.associatedComponent = box;
     addAndMakeVisible(box);
 
-    transposeTree = ValueTree(TransposeInfo::getValueTree());
-    
-    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> setToggleState(transposeTree.getPropertyAsValue(TransposeInfo::isEnabledID, nullptr).getValue(), NotificationType::dontSendNotification);
-    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> setButtonText("Enable Transpose");
-    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> addListener(this);
-
+    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> setButtonText(TransposeInfo::isEnabledParamText);
     comboBoxes[comboIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
-    comboBoxes[comboIndex::NOTE] -> setSelectedId((int)transposeTree.getPropertyAsValue(TransposeInfo::transNoteID, nullptr).getValue() + 1);
-    comboBoxes[comboIndex::NOTE] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -108,23 +101,11 @@ void TransposeSelect::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void TransposeSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
+void TransposeSelect::connectState(AudioProcessorValueTreeState& parameters)
 {
-    if (comboBoxThatHasChanged == comboBoxes[comboIndex::NOTE])
-        transposeTree.setProperty(TransposeInfo::transNoteID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
-};
-
-void TransposeSelect::buttonClicked(Button *buttonThatWasClicked)
-{
-
-};
-
-void TransposeSelect::buttonStateChanged(Button *buttonThatHasChanged)
-{
-    if (buttonThatHasChanged == toggleButtons[toggleIndex::ONOFF_TOGGLE])
-        transposeTree.setProperty(TransposeInfo::isEnabledID, buttonThatHasChanged -> getToggleStateValue(), nullptr);
-
-};
+    onoffAttachment.reset(new AudioProcessorValueTreeState::ButtonAttachment(parameters, TransposeInfo::isEnabledParam, *toggleButtons[toggleIndex::ONOFF_TOGGLE]));
+    noteAttachment.reset(new AudioProcessorValueTreeState::ComboBoxAttachment(parameters, TransposeInfo::noteParam, *comboBoxes[comboIndex::NOTE]));
+}
 //[/MiscUserCode]
 
 
@@ -138,10 +119,9 @@ void TransposeSelect::buttonStateChanged(Button *buttonThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="TransposeSelect" componentName=""
-                 parentClasses="public Component, public ComboBox::Listener, public Button::Listener"
-                 constructorParams="" variableInitialisers="" snapPixels="8" snapActive="1"
-                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="500"
-                 initialHeight="100">
+                 parentClasses="public Component" constructorParams="" variableInitialisers=""
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="500" initialHeight="100">
   <BACKGROUND backgroundColour="ff3e4c54"/>
 </JUCER_COMPONENT>
 

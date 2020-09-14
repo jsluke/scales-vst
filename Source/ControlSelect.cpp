@@ -41,10 +41,7 @@ ControlSelect::ControlSelect ()
     flexItem.associatedComponent = box;
     addAndMakeVisible(box);
 
-    controlChannelTree = ValueTree(MidiChannelInfo::getControlValueTree());
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(midiChannelInfo.getStringArray(), 1);
-    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setSelectedId((int)controlChannelTree.getPropertyAsValue(MidiChannelInfo::controlChannelID, nullptr).getValue() + 1);
-    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addListener(this);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -96,12 +93,9 @@ void ControlSelect::resized()
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
-void ControlSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
+void ControlSelect::connectState(AudioProcessorValueTreeState& parameters)
 {
-    // TODO: need to clean up getSelectedId() - 1 nonsense. How to make sure the IDs mean the same thing?
-
-    if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::CONTROL_CHANNEL])
-        controlChannelTree.setProperty(MidiChannelInfo::controlChannelID, comboBoxThatHasChanged -> getSelectedId() - 1, nullptr);
+    controlAttachment.reset(new AudioProcessorValueTreeState::ComboBoxAttachment(parameters, MidiChannelInfo::controlChannelParam, *comboBoxes[comboBoxIndex::CONTROL_CHANNEL]));
 }
 //[/MiscUserCode]
 
@@ -116,9 +110,9 @@ void ControlSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="ControlSelect" componentName=""
-                 parentClasses="public Component, public ComboBox::Listener" constructorParams=""
-                 variableInitialisers="" snapPixels="8" snapActive="1" snapShown="1"
-                 overlayOpacity="0.330" fixedSize="0" initialWidth="500" initialHeight="100">
+                 parentClasses="public Component" constructorParams="" variableInitialisers=""
+                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+                 fixedSize="0" initialWidth="500" initialHeight="100">
   <BACKGROUND backgroundColour="ff3e4c54"/>
 </JUCER_COMPONENT>
 
