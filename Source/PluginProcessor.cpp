@@ -344,10 +344,25 @@ NoteOnData ScalesAudioProcessor::newToSet(MidiMessage msg, int channelToSet, int
 
 int ScalesAudioProcessor::transpose(int noteNumber)
 {
-    if (!transposeEnabled)
+    if (!transposeEnabled || transposeNote == currentScaleNote)
         return noteNumber;
     
-    return noteNumber + abs(transposeNote - currentScaleNote);
+    int up;
+    int down;
+
+    if (transposeNote > currentScaleNote)
+    {
+        up = 12 - transposeNote + currentScaleNote;
+        down = currentScaleNote - transposeNote;
+    }
+    else {
+        up = currentScaleNote - transposeNote;
+        down = -12 - transposeNote + currentScaleNote;
+    }
+
+    // use smallest distance
+    return noteNumber + (abs(up) <= abs(down) ? up : down);
+
 }
 
 //==============================================================================
