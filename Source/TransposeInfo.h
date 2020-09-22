@@ -27,6 +27,8 @@ public:
     
     static ValueTree& getValueTree();
     
+    static int getTransposeAmount(int transposeNote, int scaleNote);
+    
     TransposeInfo();
 
 private:

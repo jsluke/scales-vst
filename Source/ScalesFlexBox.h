@@ -65,7 +65,9 @@ private:
     ScaleSelect* scaleSelect;
     OperationSelect* operationSelect;
     ControlSelect* controlSelect;
+    enum panelIndex {SCALE, TRANSPOSE, OPERATION, CONTROL};
     OwnedArray<Component> panels;
+    OwnedArray<Label> labels;
     //[/UserVariables]
 
     //==============================================================================

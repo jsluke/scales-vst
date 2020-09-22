@@ -14,8 +14,8 @@ const Identifier TransposeInfo::transTreeID ("TransposeTree");
 const Identifier TransposeInfo::isEnabledID ("isTransposeEnabledID");
 const Identifier TransposeInfo::transNoteID ("TransposeNoteID");
 
-const String TransposeInfo::isEnabledParam = "TransposeIsEnabledParam";
-const String TransposeInfo::isEnabledParamText = TRANS("Transpose Enabled");
+const String TransposeInfo::isEnabledParam = "IsEnabledTransposeParam";
+const String TransposeInfo::isEnabledParamText = TRANS("Enable Transpose");
 const bool   TransposeInfo::isEnabledParamDefault = false;
 
 const String TransposeInfo::noteParam = "TransposeNoteParam";
@@ -34,4 +34,23 @@ ValueTree& TransposeInfo::getValueTree()
 {
     static ValueTree channelTree = getInitialValueTree();
     return channelTree;
+}
+
+int TransposeInfo::getTransposeAmount(int transposeNote, int scaleNote)
+{
+    int up;
+    int down;
+
+    if (transposeNote > scaleNote)
+    {
+        up = 12 - transposeNote + scaleNote;
+        down = scaleNote - transposeNote;
+    }
+    else {
+        up = scaleNote - transposeNote;
+        down = -12 - transposeNote + scaleNote;
+    }
+
+    // use smallest distance
+    return abs(up) <= abs(down) ? up : down;
 }

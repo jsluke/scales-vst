@@ -35,7 +35,8 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class TransposeSelect  : public Component
+class TransposeSelect  : public Component,
+                         public AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -60,12 +61,26 @@ private:
     OwnedArray<ComboBox> comboBoxes;
 
     enum toggleIndex {ONOFF_TOGGLE};
-    OwnedArray<ToggleButton> toggleButtons;
+    OwnedArray<DrawableButton> drawableButtons;
+
+    enum labelIndex {TRANSPOSE_AMT};
+    OwnedArray<Label> labels;
+
+    std::unique_ptr<Drawable> svgOn;
+    std::unique_ptr<Drawable> svgOff;
+
     std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> onoffAttachment;
     std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> noteAttachment;
 
     NoteInfo noteInfo;
+    StringArray noteText;
     ValueTree transposeTree;
+    
+    AudioProcessorValueTreeState* apvts;
+    void parameterChanged(const String &parameterID, float newValue) override;
+    String getTransposeAmountString(int transposeNote, int scaleNote);
+    void updateLabelTextAsync(Label* label, const String &newText);
+    void updateLabelVisiblilityAsync(Label* label, bool isVisible);
     //[/UserVariables]
 
     //==============================================================================

@@ -34,33 +34,55 @@ ScalesFlexBox::ScalesFlexBox ()
 
 
     //[UserPreSize]
-    flexBox.items.add(FlexItem(500, 100).withMargin(5));
+    auto panelMargin = FlexItem::Margin(30, 5, 5, 5);
+    
+    flexBox.items.add(FlexItem(500, 50).withMargin(panelMargin));
     auto &flexItemScale = flexBox.items.getReference(flexBox.items.size() - 1);
     scaleSelect = new ScaleSelect();
     panels.add(scaleSelect);
     flexItemScale.associatedComponent = scaleSelect;
     addAndMakeVisible(scaleSelect);
+    
+    Label* lScale = new Label();
+    lScale -> setText(TRANS("Output Scale"), NotificationType::dontSendNotification);
+    lScale -> attachToComponent(scaleSelect, false);
+    labels.add(lScale);
 
-    flexBox.items.add(FlexItem(500, 100).withMargin(5));
+    flexBox.items.add(FlexItem(500, 50).withMargin(panelMargin));
     auto &flexItemTranspose = flexBox.items.getReference(flexBox.items.size() - 1);
     transposeSelect = new TransposeSelect();
     panels.add(transposeSelect);
     flexItemTranspose.associatedComponent = transposeSelect;
     addAndMakeVisible(transposeSelect);
+    
+    Label* lTrans = new Label();
+    lTrans -> setText(TRANS("Transpose Notes"), NotificationType::dontSendNotification);
+    lTrans -> attachToComponent(transposeSelect, false);
+    labels.add(lTrans);
 
-    flexBox.items.add(FlexItem(500, 100).withMargin(5));
+    flexBox.items.add(FlexItem(500, 50).withMargin(panelMargin));
     auto &flexItemOp = flexBox.items.getReference(flexBox.items.size() - 1);
     operationSelect = new OperationSelect();
     panels.add(operationSelect);
     flexItemOp.associatedComponent = operationSelect;
     addAndMakeVisible(operationSelect);
+    
+    Label* lOp = new Label();
+    lOp -> setText(TRANS("Operation for Notes Out of Scale"), NotificationType::dontSendNotification);
+    lOp -> attachToComponent(operationSelect, false);
+    labels.add(lOp);
 
-    flexBox.items.add(FlexItem(500, 100).withMargin(5));
+    flexBox.items.add(FlexItem(500, 50).withMargin(panelMargin));
     auto &flexItemControl = flexBox.items.getReference(flexBox.items.size() - 1);
     controlSelect = new ControlSelect();
     panels.add(controlSelect);
     flexItemControl.associatedComponent = controlSelect;
     addAndMakeVisible(controlSelect);
+    
+    Label* lCon = new Label();
+    lCon -> setText(TRANS("MIDI Channel to Control Output Scale Settings"), NotificationType::dontSendNotification);
+    lCon -> attachToComponent(controlSelect, false);
+    labels.add(lCon);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::column;
@@ -69,7 +91,7 @@ ScalesFlexBox::ScalesFlexBox ()
     flexBox.flexWrap = FlexBox::Wrap::wrap;
     //[/UserPreSize]
 
-    setSize (510, 440);
+    setSize (510, 520);
 
 
     //[Constructor] You can add your own custom stuff here..

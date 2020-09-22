@@ -46,6 +46,8 @@
       <FILE id="WqjQGY" name="TransposeSelect.cpp" compile="1" resource="0"
             file="Source/TransposeSelect.cpp"/>
     </GROUP>
+    <FILE id="Itqpyl" name="on_v2.svg" compile="0" resource="1" file="on_v2.svg"/>
+    <FILE id="Rwstqd" name="off_v2.svg" compile="0" resource="1" file="off_v2.svg"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

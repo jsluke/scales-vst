@@ -34,22 +34,42 @@ TransposeSelect::TransposeSelect ()
 
 
     //[UserPreSize]
-    flexBox.items.add(FlexItem(100, 30).withMargin(10));
+    auto onXml = XmlDocument::parse(BinaryData::on_v2_svg);
+    svgOn = Drawable::createFromSVG(*onXml);
+
+    auto offXml = XmlDocument::parse(BinaryData::off_v2_svg);
+    svgOff = Drawable::createFromSVG(*offXml);
+    
+    noteText = noteInfo.getStringArray();
+
+    flexBox.items.add(FlexItem(100, 30).withMargin(10).withMaxHeight(30));
     auto &flexItemToggle = flexBox.items.getReference(flexBox.items.size() - 1);
-    ToggleButton* toggle = new ToggleButton();
-    toggleButtons.add(toggle);
+    DrawableButton* toggle = new DrawableButton("button name", DrawableButton::ButtonStyle::ImageFitted);
+    drawableButtons.add(toggle);
     flexItemToggle.associatedComponent = toggle;
     addAndMakeVisible(toggle);
 
-    flexBox.items.add(FlexItem(100, 30).withMargin(10));
+    flexBox.items.add(FlexItem(100, 30).withMargin(10).withMaxHeight(30));
     auto &flexItemBox = flexBox.items.getReference(flexBox.items.size() - 1);
     ComboBox* box = new ComboBox();
     comboBoxes.add(box);
     flexItemBox.associatedComponent = box;
     addAndMakeVisible(box);
 
-    toggleButtons[toggleIndex::ONOFF_TOGGLE] -> setButtonText(TransposeInfo::isEnabledParamText);
+    flexBox.items.add(FlexItem(200, 30).withMargin(10));
+    auto &flexItemAmt = flexBox.items.getReference(flexBox.items.size() - 1);
+    Label* amt = new Label();
+    labels.add(amt);
+    flexItemAmt.associatedComponent = amt;
+    addAndMakeVisible(amt);
+
+    drawableButtons[toggleIndex::ONOFF_TOGGLE] -> setImages(svgOff.get(), nullptr, nullptr, nullptr, svgOn.get());
+    drawableButtons[toggleIndex::ONOFF_TOGGLE] -> setColour(DrawableButton::ColourIds::backgroundColourId, Colours::transparentBlack);
+    drawableButtons[toggleIndex::ONOFF_TOGGLE] -> setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
+    drawableButtons[toggleIndex::ONOFF_TOGGLE] -> setClickingTogglesState(true);
     comboBoxes[comboIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
+    labels[labelIndex::TRANSPOSE_AMT] -> setText("", NotificationType::dontSendNotification);
+    labels[labelIndex::TRANSPOSE_AMT] -> setFont(Font(20.0f).boldened());
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -103,8 +123,84 @@ void TransposeSelect::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void TransposeSelect::connectState(AudioProcessorValueTreeState& parameters)
 {
-    onoffAttachment.reset(new AudioProcessorValueTreeState::ButtonAttachment(parameters, TransposeInfo::isEnabledParam, *toggleButtons[toggleIndex::ONOFF_TOGGLE]));
+    onoffAttachment.reset(new AudioProcessorValueTreeState::ButtonAttachment(parameters, TransposeInfo::isEnabledParam, *drawableButtons[toggleIndex::ONOFF_TOGGLE]));
     noteAttachment.reset(new AudioProcessorValueTreeState::ComboBoxAttachment(parameters, TransposeInfo::noteParam, *comboBoxes[comboIndex::NOTE]));
+    
+    apvts = &parameters;
+    parameters.addParameterListener(TransposeInfo::isEnabledParam, this);
+    parameters.addParameterListener(TransposeInfo::noteParam, this);
+    parameters.addParameterListener(NoteInfo::noteParam, this);
+    
+    AudioParameterChoice* transposeNoteChoice = (AudioParameterChoice*)(apvts->getParameter(TransposeInfo::noteParam));
+    AudioParameterChoice* scaleNoteChoice = (AudioParameterChoice*)(apvts->getParameter(NoteInfo::noteParam));
+    int transposeNote = transposeNoteChoice->getIndex();
+    int scaleNote = scaleNoteChoice->getIndex();
+    updateLabelTextAsync(labels[labelIndex::TRANSPOSE_AMT], getTransposeAmountString(transposeNote, scaleNote));
+    
+    AudioParameterBool* transposeEnabledChoice = (AudioParameterBool*)(apvts->getParameter(TransposeInfo::isEnabledParam));
+    if (transposeEnabledChoice->get()) {
+        updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], true);
+    }
+    else {
+        updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], false);
+    }
+}
+
+void TransposeSelect::parameterChanged(const String &parameterID, float newValue)
+{
+    // TODO - make sure string lengths are disparate to make str compares faster?
+    if (parameterID == TransposeInfo::isEnabledParam)
+    {
+        if (newValue == 0.0f) {
+            updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], false);
+        }
+        else {
+            updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], true);
+        }
+    }
+    else if (parameterID == TransposeInfo::noteParam)
+    {
+        AudioParameterChoice* scaleNoteChoice = (AudioParameterChoice*)(apvts->getParameter(NoteInfo::noteParam));
+        
+        int transposeNote = roundToInt(newValue);
+        int scaleNote = scaleNoteChoice->getIndex();
+        updateLabelTextAsync(labels[labelIndex::TRANSPOSE_AMT], getTransposeAmountString(transposeNote, scaleNote));
+    }
+    else if (parameterID == NoteInfo::noteParam)
+    {
+        AudioParameterChoice* transposeNoteChoice = (AudioParameterChoice*)(apvts->getParameter(TransposeInfo::noteParam));
+        
+        int transposeNote = transposeNoteChoice -> getIndex();
+        int scaleNote = roundToInt(newValue);
+        updateLabelTextAsync(labels[labelIndex::TRANSPOSE_AMT], getTransposeAmountString(transposeNote, scaleNote));
+    }
+}
+
+String TransposeSelect::getTransposeAmountString(int transposeNote, int scaleNote)
+{
+    int transposeAmount = TransposeInfo::getTransposeAmount(transposeNote, scaleNote);
+    
+    String result = noteText[transposeNote];
+    result += String(CharPointer_UTF8 (" \u2192 ")); // left arrow unicode
+    result += noteText[scaleNote];
+    result += transposeAmount < 0 ? " (" : " (+";
+    result += transposeAmount;
+    result += ")";
+    return result;
+}
+
+void TransposeSelect::updateLabelTextAsync(Label* label, const String &newText)
+{
+    MessageManager::callAsync( [=]() {
+        label -> setText(newText, dontSendNotification);
+    });
+}
+
+void TransposeSelect::updateLabelVisiblilityAsync(Label* label, bool isVisible)
+{
+    MessageManager::callAsync( [=]() {
+        label -> setVisible(isVisible);
+    });
 }
 //[/MiscUserCode]
 
@@ -119,9 +215,10 @@ void TransposeSelect::connectState(AudioProcessorValueTreeState& parameters)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="TransposeSelect" componentName=""
-                 parentClasses="public Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="500" initialHeight="100">
+                 parentClasses="public Component, public AudioProcessorValueTreeState::Listener"
+                 constructorParams="" variableInitialisers="" snapPixels="8" snapActive="1"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="0" initialWidth="500"
+                 initialHeight="100">
   <BACKGROUND backgroundColour="ff3e4c54"/>
 </JUCER_COMPONENT>
 
