@@ -10,11 +10,12 @@
 
 #include "OperationInfo.h"
 
-const Operation OperationInfo::DROP = Operation(0, TRANS("Drop"));
-const Operation OperationInfo::UP = Operation(1, TRANS("Up"));
-const Operation OperationInfo::DOWN = Operation(2, TRANS("Down"));
-const Operation OperationInfo::RAND = Operation(3, TRANS("Random"));
-const Operation OperationInfo::ROUTE = Operation(4, TRANS("Route"));
+const Operation OperationInfo::DROP = Operation(0, TRANS("Drop"), TRANS("Filter out notes not in scale"));
+const Operation OperationInfo::UP = Operation(1, TRANS("Up"), TRANS("Transpose note up to nearest note in scale"));
+const Operation OperationInfo::DOWN = Operation(2, TRANS("Down"), TRANS("Transpose note down to nearest note in scale"));
+const Operation OperationInfo::RAND = Operation(3, TRANS("Random"), TRANS("Randomly choose between transposing up or down to nearest note in scale"));
+const Operation OperationInfo::ROUTE = Operation(4, TRANS("Route"), TRANS("Remap out of scale notes to specified MIDI channel"));
+const Operation OperationInfo::NONE = Operation(5, TRANS("None"), TRANS("Make no changes to notes that are out of scale"));
 
 const Identifier OperationInfo::operationTreeID ("OperationTree");
 const Identifier OperationInfo::operationID ("OperationID");
@@ -44,6 +45,7 @@ OperationInfo::OperationInfo()
     operationOptions[DOWN.order] = DOWN;
     operationOptions[RAND.order] = RAND;
     operationOptions[ROUTE.order] = ROUTE;
+    operationOptions[NONE.order] = NONE;
 }
 
 StringArray OperationInfo::getStringArray()
@@ -54,5 +56,11 @@ StringArray OperationInfo::getStringArray()
     options.add(DOWN.localizedString);
     options.add(RAND.localizedString);
     options.add(ROUTE.localizedString);
+    options.add(NONE.localizedString);
     return options;
+}
+
+String OperationInfo::getDescripton(int index)
+{
+    return operationOptions[index].description;
 }

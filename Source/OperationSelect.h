@@ -57,8 +57,10 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
     FlexBox flexBox;
     OwnedArray<ComboBox> comboBoxes;
+    OwnedArray<Label> labels;
 
     enum comboBoxIndex {OPERATION, ROUTE};
+    enum labelIndex {DESCRIPTION};
     OperationInfo operationInfo;
     MidiChannelInfo midiChannelInfo;
     ValueTree operationTree;
@@ -69,6 +71,7 @@ private:
 
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
     void updateVisibleComboBoxAsync(ComboBox* box, bool isVisible);
+    void updateLabelTextAsync(Label* label, const String &newText);
     //[/UserVariables]
 
     //==============================================================================

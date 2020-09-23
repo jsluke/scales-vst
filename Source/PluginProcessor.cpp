@@ -247,7 +247,7 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         else if (!msg.isNoteOnOrOff())
         {
             output.addEvent(msg, sampleNum);
-        } else if (scaleInfo.isNoteInScale(currentScale, noteToUse, msg.getNoteNumber())) {
+        } else if (operation == OperationInfo::NONE.order || scaleInfo.isNoteInScale(currentScale, noteToUse, msg.getNoteNumber())) {
             addOutputNote(output, sampleNum, msg, msg.getChannel(), msg.getNoteNumber());
         } else {
             // TODO: refactor

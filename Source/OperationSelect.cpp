@@ -53,6 +53,13 @@ OperationSelect::OperationSelect ()
     addChildComponent(routeBox);
 
     comboBoxes[comboBoxIndex::ROUTE] -> addItemList(midiChannelInfo.getStringArray(), 1);
+    
+    flexBox.items.add(FlexItem(250, 40).withMargin(5));
+    auto &flexItemDesc = flexBox.items.getReference(flexBox.items.size() - 1);
+    Label* desc = new Label();
+    labels.add(desc);
+    flexItemDesc.associatedComponent = desc;
+    addAndMakeVisible(desc);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -114,6 +121,8 @@ void OperationSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
             updateVisibleComboBoxAsync(comboBoxes[comboBoxIndex::ROUTE], true);
         else
             updateVisibleComboBoxAsync(comboBoxes[comboBoxIndex::ROUTE], false);
+        
+        updateLabelTextAsync(labels[labelIndex::DESCRIPTION], operationInfo.getDescripton(comboBoxes[comboBoxIndex::OPERATION] -> getSelectedId() - 1));
     }
 }
 
@@ -121,6 +130,13 @@ void OperationSelect::updateVisibleComboBoxAsync(ComboBox* box, bool isVisible)
 {
     MessageManager::callAsync( [=]() {
         box -> setVisible(isVisible);
+    });
+}
+
+void OperationSelect::updateLabelTextAsync(Label* label, const String &newText)
+{
+    MessageManager::callAsync( [=]() {
+        label -> setText(newText, dontSendNotification);
     });
 }
 

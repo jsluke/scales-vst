@@ -17,9 +17,10 @@ struct Operation
 {
     int order;
     String localizedString;
+    String description;
     
     Operation() {};
-    Operation(int order, String localizedString) : order(order), localizedString(localizedString) {};
+    Operation(int order, String localizedString, String description) : order(order), localizedString(localizedString), description(description) {};
 };
     
 class OperationInfo
@@ -30,6 +31,7 @@ public:
     static const Operation DOWN;
     static const Operation RAND;
     static const Operation ROUTE;
+    static const Operation NONE;
     static const Identifier operationID;
     
     static const String operationParam;
@@ -37,15 +39,15 @@ public:
     static const int    operationParamDefault;
     
     static ValueTree& getValueTree();
+    static StringArray getStringArray();
     
     OperationInfo();
-    
-    static StringArray getStringArray();
+    String getDescripton(int index);
 
 private:
     static const Identifier operationTreeID;
     
     static ValueTree getInitialValueTree();
     
-    std::array<Operation, 5> operationOptions;
+    std::array<Operation, 6> operationOptions;
 };
