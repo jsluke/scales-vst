@@ -69,7 +69,7 @@ TransposeSelect::TransposeSelect ()
     drawableButtons[toggleIndex::ONOFF_TOGGLE] -> setClickingTogglesState(true);
     comboBoxes[comboIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
     labels[labelIndex::TRANSPOSE_AMT] -> setText("", NotificationType::dontSendNotification);
-    labels[labelIndex::TRANSPOSE_AMT] -> setFont(Font(20.0f).boldened());
+    labels[labelIndex::TRANSPOSE_AMT] -> setFont(Font().boldened());
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;

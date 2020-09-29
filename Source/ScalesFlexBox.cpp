@@ -91,7 +91,7 @@ ScalesFlexBox::ScalesFlexBox ()
     flexBox.flexWrap = FlexBox::Wrap::wrap;
     //[/UserPreSize]
 
-    setSize (510, 520);
+    setSize (510, 340);
 
 
     //[Constructor] You can add your own custom stuff here..

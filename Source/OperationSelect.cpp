@@ -130,6 +130,27 @@ void OperationSelect::updateVisibleComboBoxAsync(ComboBox* box, bool isVisible)
 {
     MessageManager::callAsync( [=]() {
         box -> setVisible(isVisible);
+        
+        for (auto& item : flexBox.items)
+        {
+            if (item.associatedComponent == box)
+            {
+                if (isVisible)
+                {
+                    item.minWidth = 100;
+                    item.maxWidth = FlexItem::notAssigned;
+                    item.margin = 10;
+                }
+                else
+                {
+                    item.minWidth = 5; // align with other elements margins
+                    item.maxWidth = 5; // align with other elements margins
+                    item.margin = 0;
+                }
+                flexBox.performLayout(getLocalBounds());
+                break;
+            }
+        }
     });
 }
 
