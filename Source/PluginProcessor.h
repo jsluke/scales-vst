@@ -70,9 +70,9 @@ private:
     
     //==============================================================================
     void addOutputNote(MidiBuffer &output, int sampleNum, MidiMessage &msg, int channelToSet, int noteToSet);
-    void setNoteMap(MidiMessage msg, NoteOnData toSet);
-    bool shouldSkipNoteOff(MidiMessage msg, NoteOnData toSet);
-    NoteOnData newToSet(MidiMessage msg, int channelToSet, int noteToSet);
+    void setNoteMap(const MidiMessage &msg, const NoteOnData &toSet);
+    bool shouldSkipNoteOff(const MidiMessage &msg, const NoteOnData &toSet);
+    NoteOnData newToSet(const MidiMessage &msg, int channelToSet, int noteToSet);
     int transpose(int noteNumber);
     
     //==============================================================================

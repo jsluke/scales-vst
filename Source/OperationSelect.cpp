@@ -118,17 +118,16 @@ void OperationSelect::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
     if (comboBoxThatHasChanged == comboBoxes[comboBoxIndex::OPERATION])
     {
         if (comboBoxes[comboBoxIndex::OPERATION] -> getSelectedId() == OperationInfo::ROUTE.order + 1)
-            updateVisibleComboBoxAsync(comboBoxes[comboBoxIndex::ROUTE], true);
+            updateVisibleComboBox(comboBoxes[comboBoxIndex::ROUTE], true);
         else
-            updateVisibleComboBoxAsync(comboBoxes[comboBoxIndex::ROUTE], false);
+            updateVisibleComboBox(comboBoxes[comboBoxIndex::ROUTE], false);
         
-        updateLabelTextAsync(labels[labelIndex::DESCRIPTION], operationInfo.getDescripton(comboBoxes[comboBoxIndex::OPERATION] -> getSelectedId() - 1));
+        labels[labelIndex::DESCRIPTION] -> setText(operationInfo.getDescripton(comboBoxes[comboBoxIndex::OPERATION] -> getSelectedId() - 1), dontSendNotification);
     }
 }
 
-void OperationSelect::updateVisibleComboBoxAsync(ComboBox* box, bool isVisible)
+void OperationSelect::updateVisibleComboBox(ComboBox* box, bool isVisible)
 {
-    MessageManager::callAsync( [=]() {
         box -> setVisible(isVisible);
         
         for (auto& item : flexBox.items)
@@ -151,14 +150,6 @@ void OperationSelect::updateVisibleComboBoxAsync(ComboBox* box, bool isVisible)
                 break;
             }
         }
-    });
-}
-
-void OperationSelect::updateLabelTextAsync(Label* label, const String &newText)
-{
-    MessageManager::callAsync( [=]() {
-        label -> setText(newText, dontSendNotification);
-    });
 }
 
 void OperationSelect::connectState(AudioProcessorValueTreeState& parameters)

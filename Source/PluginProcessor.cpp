@@ -187,23 +187,8 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-//    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-//    {
-//        auto* channelData = buffer.getWritePointer (channel);
-//
-//        // ..do something to the data...
-//    }
     
-    MidiMessage msg;
     MidiBuffer output;
-    int sampleNum;
     
     currentScaleNote = scaleNoteParam->getIndex();
     currentScale = scaleTypeParam->getIndex();
@@ -215,8 +200,9 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     int noteToUse = transposeEnabled ? transposeNote : currentScaleNote;
 
 
-    for (MidiBuffer::Iterator it(midiMessages); it.getNextEvent(msg, sampleNum);)
+    for (const MidiMessageMetadata metadata : midiMessages)
     {
+        MidiMessage msg = metadata.getMessage();
         if (msg.getChannel() == controlChannel)
         {
             if (msg.isNoteOn())
@@ -241,14 +227,14 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
             // prevent infinite note on scenario caused by control channel
             else if (msg.isNoteOff())
             {
-                output.addEvent(msg, sampleNum);
+                output.addEvent(msg, metadata.samplePosition);
             }
         }
         else if (!msg.isNoteOnOrOff())
         {
-            output.addEvent(msg, sampleNum);
+            output.addEvent(msg, metadata.samplePosition);
         } else if (operation == OperationInfo::NONE.order || scaleInfo.isNoteInScale(currentScale, noteToUse, msg.getNoteNumber())) {
-            addOutputNote(output, sampleNum, msg, msg.getChannel(), msg.getNoteNumber());
+            addOutputNote(output, metadata.samplePosition, msg, msg.getChannel(), msg.getNoteNumber());
         } else {
             // TODO: refactor
             if (operation == OperationInfo::DROP.order)
@@ -256,17 +242,17 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                 if (msg.isNoteOn())
                     continue;
 
-                addOutputNote(output, sampleNum, msg, msg.getChannel(), msg.getNoteNumber());
+                addOutputNote(output, metadata.samplePosition, msg, msg.getChannel(), msg.getNoteNumber());
             }
             else if (operation == OperationInfo::UP.order)
             {
                 int toSet = scaleInfo.getNoteUp(currentScale, noteToUse, msg.getNoteNumber(), true);
-                addOutputNote(output, sampleNum, msg, msg.getChannel(), toSet);
+                addOutputNote(output, metadata.samplePosition, msg, msg.getChannel(), toSet);
             }
             else if (operation == OperationInfo::DOWN.order)
             {
                 int toSet = scaleInfo.getNoteDown(currentScale, noteToUse, msg.getNoteNumber(), true);
-                addOutputNote(output, sampleNum, msg, msg.getChannel(), toSet);
+                addOutputNote(output, metadata.samplePosition, msg, msg.getChannel(), toSet);
             }
             else if (operation == OperationInfo::RAND.order)
             {
@@ -276,12 +262,12 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
                 else
                     toSet = scaleInfo.getNoteUp(currentScale, noteToUse, msg.getNoteNumber(), true);
                 
-                addOutputNote(output, sampleNum, msg, msg.getChannel(), toSet);
+                addOutputNote(output, metadata.samplePosition, msg, msg.getChannel(), toSet);
             }
             if (operation == OperationInfo::ROUTE.order)
             {
                 if (routeChannel > 0)
-                    addOutputNote(output, sampleNum, msg, routeChannel, msg.getNoteNumber());
+                    addOutputNote(output, metadata.samplePosition, msg, routeChannel, msg.getNoteNumber());
             }
         }
     }
@@ -303,7 +289,7 @@ void ScalesAudioProcessor::addOutputNote(MidiBuffer &output, int sampleNum, Midi
     output.addEvent(msg, sampleNum);
 }
 
-void ScalesAudioProcessor::setNoteMap(MidiMessage msg, NoteOnData toSet)
+void ScalesAudioProcessor::setNoteMap(const MidiMessage &msg, const NoteOnData &toSet)
 {
     const NoteOnData msgData = NoteOnData(msg);
     
@@ -313,7 +299,7 @@ void ScalesAudioProcessor::setNoteMap(MidiMessage msg, NoteOnData toSet)
         noteOnMap[msgData.channel][msgData.note] = NoteInfo::NO_NOTE;
 }
 
-bool ScalesAudioProcessor::shouldSkipNoteOff(MidiMessage msg, NoteOnData toSet)
+bool ScalesAudioProcessor::shouldSkipNoteOff(const MidiMessage &msg, const NoteOnData &toSet)
 {
     if (!msg.isNoteOff())
         return false;
@@ -332,7 +318,7 @@ bool ScalesAudioProcessor::shouldSkipNoteOff(MidiMessage msg, NoteOnData toSet)
 
 // check if note OFF value needs to be transposed due to change of operation setting.
 // prevents note staying on indefinitely
-NoteOnData ScalesAudioProcessor::newToSet(MidiMessage msg, int channelToSet, int noteToSet)
+NoteOnData ScalesAudioProcessor::newToSet(const MidiMessage &msg, int channelToSet, int noteToSet)
 {
     const NoteOnData msgData = NoteOnData(msg);
     const NoteOnData toSet = NoteOnData(channelToSet, noteToSet);

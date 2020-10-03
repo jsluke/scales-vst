@@ -39,7 +39,7 @@ TransposeSelect::TransposeSelect ()
 
     auto offXml = XmlDocument::parse(BinaryData::off_v2_svg);
     svgOff = Drawable::createFromSVG(*offXml);
-    
+
     noteText = noteInfo.getStringArray();
 
     flexBox.items.add(FlexItem(100, 30).withMargin(10).withMaxHeight(30));
@@ -93,6 +93,9 @@ TransposeSelect::~TransposeSelect()
 
 
     //[Destructor]. You can add your own custom destruction code here..
+    apvts -> removeParameterListener(TransposeInfo::isEnabledParam, this);
+    apvts -> removeParameterListener(TransposeInfo::noteParam, this);
+    apvts -> removeParameterListener(NoteInfo::noteParam, this);
     //[/Destructor]
 }
 
@@ -125,24 +128,24 @@ void TransposeSelect::connectState(AudioProcessorValueTreeState& parameters)
 {
     onoffAttachment.reset(new AudioProcessorValueTreeState::ButtonAttachment(parameters, TransposeInfo::isEnabledParam, *drawableButtons[toggleIndex::ONOFF_TOGGLE]));
     noteAttachment.reset(new AudioProcessorValueTreeState::ComboBoxAttachment(parameters, TransposeInfo::noteParam, *comboBoxes[comboIndex::NOTE]));
-    
+
     apvts = &parameters;
-    parameters.addParameterListener(TransposeInfo::isEnabledParam, this);
-    parameters.addParameterListener(TransposeInfo::noteParam, this);
-    parameters.addParameterListener(NoteInfo::noteParam, this);
-    
+    apvts -> addParameterListener(TransposeInfo::isEnabledParam, this);
+    apvts -> addParameterListener(TransposeInfo::noteParam, this);
+    apvts -> addParameterListener(NoteInfo::noteParam, this);
+
     AudioParameterChoice* transposeNoteChoice = (AudioParameterChoice*)(apvts->getParameter(TransposeInfo::noteParam));
     AudioParameterChoice* scaleNoteChoice = (AudioParameterChoice*)(apvts->getParameter(NoteInfo::noteParam));
     int transposeNote = transposeNoteChoice->getIndex();
     int scaleNote = scaleNoteChoice->getIndex();
-    updateLabelTextAsync(labels[labelIndex::TRANSPOSE_AMT], getTransposeAmountString(transposeNote, scaleNote));
-    
+    labels[labelIndex::TRANSPOSE_AMT] -> setText(getTransposeAmountString(transposeNote, scaleNote), dontSendNotification);
+
     AudioParameterBool* transposeEnabledChoice = (AudioParameterBool*)(apvts->getParameter(TransposeInfo::isEnabledParam));
     if (transposeEnabledChoice->get()) {
-        updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], true);
+        labels[labelIndex::TRANSPOSE_AMT] -> setVisible(true);
     }
     else {
-        updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], false);
+        labels[labelIndex::TRANSPOSE_AMT] -> setVisible(false);
     }
 }
 
@@ -152,55 +155,41 @@ void TransposeSelect::parameterChanged(const String &parameterID, float newValue
     if (parameterID == TransposeInfo::isEnabledParam)
     {
         if (newValue == 0.0f) {
-            updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], false);
+            labels[labelIndex::TRANSPOSE_AMT] -> setVisible(false);
         }
         else {
-            updateLabelVisiblilityAsync(labels[labelIndex::TRANSPOSE_AMT], true);
+            labels[labelIndex::TRANSPOSE_AMT] -> setVisible(true);
         }
     }
     else if (parameterID == TransposeInfo::noteParam)
     {
         AudioParameterChoice* scaleNoteChoice = (AudioParameterChoice*)(apvts->getParameter(NoteInfo::noteParam));
-        
+
         int transposeNote = roundToInt(newValue);
         int scaleNote = scaleNoteChoice->getIndex();
-        updateLabelTextAsync(labels[labelIndex::TRANSPOSE_AMT], getTransposeAmountString(transposeNote, scaleNote));
+        labels[labelIndex::TRANSPOSE_AMT] -> setText(getTransposeAmountString(transposeNote, scaleNote), dontSendNotification);
     }
     else if (parameterID == NoteInfo::noteParam)
     {
         AudioParameterChoice* transposeNoteChoice = (AudioParameterChoice*)(apvts->getParameter(TransposeInfo::noteParam));
-        
+
         int transposeNote = transposeNoteChoice -> getIndex();
         int scaleNote = roundToInt(newValue);
-        updateLabelTextAsync(labels[labelIndex::TRANSPOSE_AMT], getTransposeAmountString(transposeNote, scaleNote));
+        labels[labelIndex::TRANSPOSE_AMT] -> setText(getTransposeAmountString(transposeNote, scaleNote), dontSendNotification);
     }
 }
 
 String TransposeSelect::getTransposeAmountString(int transposeNote, int scaleNote)
 {
     int transposeAmount = TransposeInfo::getTransposeAmount(transposeNote, scaleNote);
-    
+
     String result = noteText[transposeNote];
-    result += String(CharPointer_UTF8 (" \u2192 ")); // left arrow unicode
+    result += String(CharPointer_UTF8 (" \u2192 ")); // right arrow unicode
     result += noteText[scaleNote];
     result += transposeAmount < 0 ? " (" : " (+";
     result += transposeAmount;
     result += ")";
     return result;
-}
-
-void TransposeSelect::updateLabelTextAsync(Label* label, const String &newText)
-{
-    MessageManager::callAsync( [=]() {
-        label -> setText(newText, dontSendNotification);
-    });
-}
-
-void TransposeSelect::updateLabelVisiblilityAsync(Label* label, bool isVisible)
-{
-    MessageManager::callAsync( [=]() {
-        label -> setVisible(isVisible);
-    });
 }
 //[/MiscUserCode]
 

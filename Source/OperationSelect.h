@@ -70,8 +70,7 @@ private:
     std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> routeAttachment;
 
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
-    void updateVisibleComboBoxAsync(ComboBox* box, bool isVisible);
-    void updateLabelTextAsync(Label* label, const String &newText);
+    void updateVisibleComboBox(ComboBox* box, bool isVisible);
     //[/UserVariables]
 
     //==============================================================================

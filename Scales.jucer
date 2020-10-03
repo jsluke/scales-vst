@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="V0oeMc" name="Scales" projectType="audioplug" jucerVersion="5.4.7"
-              pluginFormats="buildAU,buildVST3" pluginCharacteristicsValue="pluginProducesMidiOut,pluginWantsMidiIn"
+<JUCERPROJECT id="V0oeMc" name="Kitchen Scales" projectType="audioplug" pluginFormats="buildVST3"
+              pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginProducesMidiOut,pluginWantsMidiIn"
               pluginManufacturerCode="Sbst" pluginManufacturer="Substrate Instruments"
               pluginDesc="Align MIDI notes to specified scale" pluginCode="Scle"
               companyName="Substrate Instruments" companyWebsite="substrate.space"
-              headerPath="../../Source">
-  <MAINGROUP id="UikYWG" name="Scales">
+              headerPath="../../Source" pluginName="Kitchen Scales" companyCopyright="Substrate Instruments"
+              jucerFormatVersion="1" pluginVST3Category="Tools">
+  <MAINGROUP id="UikYWG" name="Kitchen Scales">
     <GROUP id="{66881EAD-FDE3-3B6D-6EF8-49CB0999E9D0}" name="Source">
       <FILE id="pwDtSs" name="TransposeInfo.cpp" compile="1" resource="0"
             file="Source/TransposeInfo.cpp"/>

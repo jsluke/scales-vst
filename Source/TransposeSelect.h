@@ -75,12 +75,10 @@ private:
     NoteInfo noteInfo;
     StringArray noteText;
     ValueTree transposeTree;
-    
+
     AudioProcessorValueTreeState* apvts;
     void parameterChanged(const String &parameterID, float newValue) override;
     String getTransposeAmountString(int transposeNote, int scaleNote);
-    void updateLabelTextAsync(Label* label, const String &newText);
-    void updateLabelVisiblilityAsync(Label* label, bool isVisible);
     //[/UserVariables]
 
     //==============================================================================
