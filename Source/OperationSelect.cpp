@@ -43,6 +43,7 @@ OperationSelect::OperationSelect ()
 
     comboBoxes[comboBoxIndex::OPERATION] -> addItemList(operationInfo.getStringArray(), 1);
     comboBoxes[comboBoxIndex::OPERATION] -> addListener(this);
+    comboBoxes[comboBoxIndex::OPERATION] -> setLookAndFeel(&comboBoxLookAndFeel);
 
 
     flexBox.items.add(FlexItem(100, 30).withMargin(10));
@@ -53,6 +54,7 @@ OperationSelect::OperationSelect ()
     addChildComponent(routeBox);
 
     comboBoxes[comboBoxIndex::ROUTE] -> addItemList(midiChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::ROUTE] -> setLookAndFeel(&comboBoxLookAndFeel);
     
     flexBox.items.add(FlexItem(250, 40).withMargin(5));
     auto &flexItemDesc = flexBox.items.getReference(flexBox.items.size() - 1);
@@ -92,7 +94,7 @@ void OperationSelect::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff3e4c54));
+    g.fillAll (ColorDefs::selectBG);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]

@@ -68,6 +68,7 @@ TransposeSelect::TransposeSelect ()
     drawableButtons[toggleIndex::ONOFF_TOGGLE] -> setColour(DrawableButton::ColourIds::backgroundOnColourId, Colours::transparentBlack);
     drawableButtons[toggleIndex::ONOFF_TOGGLE] -> setClickingTogglesState(true);
     comboBoxes[comboIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
+    comboBoxes[comboIndex::NOTE] -> setLookAndFeel(&comboBoxLookAndFeel);
     labels[labelIndex::TRANSPOSE_AMT] -> setText("", NotificationType::dontSendNotification);
     labels[labelIndex::TRANSPOSE_AMT] -> setFont(Font().boldened());
 
@@ -105,7 +106,7 @@ void TransposeSelect::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff3e4c54));
+    g.fillAll (ColorDefs::selectBG);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]

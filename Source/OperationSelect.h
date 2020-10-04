@@ -23,6 +23,7 @@
 #include <JuceHeader.h>
 #include "OperationInfo.h"
 #include "MidiChannelInfo.h"
+#include "ColorDefs.h"
 //[/Headers]
 
 
@@ -55,6 +56,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    ComboLAF comboBoxLookAndFeel;
     FlexBox flexBox;
     OwnedArray<ComboBox> comboBoxes;
     OwnedArray<Label> labels;

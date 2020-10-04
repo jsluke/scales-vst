@@ -22,6 +22,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include <JuceHeader.h>
 #include "MidiChannelInfo.h"
+#include "ColorDefs.h"
 //[/Headers]
 
 
@@ -53,6 +54,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    ComboLAF comboBoxLookAndFeel;
     FlexBox flexBox;
     OwnedArray<ComboBox> comboBoxes;
     enum comboBoxIndex {CONTROL_CHANNEL};

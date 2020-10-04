@@ -23,6 +23,7 @@
 #include <JuceHeader.h>
 #include "NoteInfo.h"
 #include "TransposeInfo.h"
+#include "ColorDefs.h"
 //[/Headers]
 
 
@@ -55,6 +56,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    ComboLAF comboBoxLookAndFeel;
     FlexBox flexBox;
 
     enum comboIndex {NOTE};

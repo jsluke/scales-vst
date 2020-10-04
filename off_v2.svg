@@ -29,10 +29,10 @@
      transform="translate(-45,-80)">
     <path
        id="path833-4"
-       style="fill:#b3b3b3;stroke:none;stroke-width:0.811739"
+       style="fill:#f7e1d7;stroke:none;stroke-width:0.811739"
        d="M 60.000118,80 A 15,15 0 0 0 45,95.000118 15,15 0 0 0 60.000118,110.00023 H 90.000354 A 15,15 0 0 0 104.99996,95.000118 15,15 0 0 0 90.000354,80 Z" />
     <circle
-       style="fill:#800000;stroke:none;stroke-width:0.89853"
+       style="fill:#edafb8;stroke:none;stroke-width:0.89853"
        id="path858-9"
        cx="60"
        cy="95"
@@ -40,18 +40,18 @@
     <g
        aria-label="OFF"
        id="text862-1"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;line-height:1.25;font-family:Menlo;-inkscape-font-specification:Menlo;letter-spacing:-1.32292px;fill:#1a1a1a;stroke-width:0.264583">
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;line-height:1.25;font-family:Menlo;-inkscape-font-specification:Menlo;letter-spacing:-1.32292px;fill:#000000;stroke-width:0.264583">
       <path
          d="m 79.063844,95.004877 q 0,-2.833593 -0.585667,-4.04799 -0.577054,-1.214397 -1.903416,-1.214397 -1.31775,0 -1.903417,1.214397 -0.577054,1.214397 -0.577054,4.04799 0,2.82498 0.577054,4.039377 0.585667,1.214396 1.903417,1.214396 1.326362,0 1.903416,-1.205783 0.585667,-1.214397 0.585667,-4.04799 z m 1.817289,0 q 0,3.35897 -1.06798,5.012613 -1.059368,1.65365 -3.238392,1.65365 -2.179025,0 -3.238392,-1.64503 -1.059368,-1.645037 -1.059368,-5.021233 0,-3.367583 1.059368,-5.02123 Q 74.404349,88.33 76.574761,88.33 q 2.179024,0 3.238392,1.653647 1.06798,1.653647 1.06798,5.02123 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;font-family:Menlo;-inkscape-font-specification:Menlo;fill:#1a1a1a;stroke-width:0.264583"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;font-family:Menlo;-inkscape-font-specification:Menlo;fill:#000000;stroke-width:0.264583"
          id="path953" />
       <path
          d="m 82.564061,88.562544 h 7.570602 v 1.464166 h -5.822215 v 3.445098 h 5.279612 v 1.464167 h -5.279612 v 6.485395 h -1.748387 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;font-family:Menlo;-inkscape-font-specification:Menlo;fill:#1a1a1a;stroke-width:0.264583"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;font-family:Menlo;-inkscape-font-specification:Menlo;fill:#000000;stroke-width:0.264583"
          id="path955" />
       <path
          d="m 91.852042,88.562544 h 7.570602 v 1.464166 h -5.822215 v 3.445098 h 5.279612 v 1.464167 h -5.279612 v 6.485395 h -1.748387 z"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;font-family:Menlo;-inkscape-font-specification:Menlo;fill:#1a1a1a;stroke-width:0.264583"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;font-family:Menlo;-inkscape-font-specification:Menlo;fill:#000000;stroke-width:0.264583"
          id="path957" />
     </g>
   </g>

@@ -36,6 +36,17 @@ ScalesFlexBox::ScalesFlexBox ()
     //[UserPreSize]
     auto panelMargin = FlexItem::Margin(30, 5, 5, 5);
     
+    auto scaleXml = XmlDocument::parse(BinaryData::foodscale_svg);
+    svgScaleFront = Drawable::createFromSVG(*scaleXml);
+    svgScaleFront -> replaceColour(Colours::black, Colour(0xfff7e1d7));
+    //svgScaleFront -> setBounds(100, 120, 0, 0);
+    //svgScaleFront -> setSize(100, 120);
+    svgScaleBack = Drawable::createFromSVG(*scaleXml);
+    svgScaleBack -> replaceColour(Colours::black, Colour(0xffedafb8));
+    
+    //addAndMakeVisible(svgScaleFront.get());
+    
+    
     flexBox.items.add(FlexItem(500, 50).withMargin(panelMargin));
     auto &flexItemScale = flexBox.items.getReference(flexBox.items.size() - 1);
     scaleSelect = new ScaleSelect();
@@ -45,6 +56,7 @@ ScalesFlexBox::ScalesFlexBox ()
     
     Label* lScale = new Label();
     lScale -> setText(TRANS("Output Scale"), NotificationType::dontSendNotification);
+    lScale -> setColour(Label::ColourIds::backgroundColourId, ColorDefs::selectBG);
     lScale -> attachToComponent(scaleSelect, false);
     labels.add(lScale);
 
@@ -57,6 +69,7 @@ ScalesFlexBox::ScalesFlexBox ()
     
     Label* lTrans = new Label();
     lTrans -> setText(TRANS("Transpose Notes"), NotificationType::dontSendNotification);
+    lTrans -> setColour(Label::ColourIds::backgroundColourId, ColorDefs::selectBG);
     lTrans -> attachToComponent(transposeSelect, false);
     labels.add(lTrans);
 
@@ -69,6 +82,7 @@ ScalesFlexBox::ScalesFlexBox ()
     
     Label* lOp = new Label();
     lOp -> setText(TRANS("Operation for Notes Out of Scale"), NotificationType::dontSendNotification);
+    lOp -> setColour(Label::ColourIds::backgroundColourId, ColorDefs::selectBG);
     lOp -> attachToComponent(operationSelect, false);
     labels.add(lOp);
 
@@ -81,6 +95,7 @@ ScalesFlexBox::ScalesFlexBox ()
     
     Label* lCon = new Label();
     lCon -> setText(TRANS("MIDI Channel to Control Output Scale Settings"), NotificationType::dontSendNotification);
+    lCon -> setColour(Label::ColourIds::backgroundColourId, ColorDefs::selectBG);
     lCon -> attachToComponent(controlSelect, false);
     labels.add(lCon);
 
@@ -116,9 +131,12 @@ void ScalesFlexBox::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff323e44));
+    g.fillAll (ColorDefs::windowBG);
 
     //[UserPaint] Add your own custom painting code here..
+    auto bounds = this -> getBounds().withTrimmedTop(10).withTrimmedBottom(10);
+    svgScaleBack -> drawWithin(g, bounds.withTrimmedLeft(5).toFloat(), RectanglePlacement::xMid + RectanglePlacement::yTop, 1.0f);
+    svgScaleFront -> drawWithin(g, bounds.withTrimmedRight(5).toFloat(), RectanglePlacement::xMid + RectanglePlacement::yTop, 1.0f);
     //[/UserPaint]
 }
 

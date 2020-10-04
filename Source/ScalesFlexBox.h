@@ -68,6 +68,10 @@ private:
     enum panelIndex {SCALE, TRANSPOSE, OPERATION, CONTROL};
     OwnedArray<Component> panels;
     OwnedArray<Label> labels;
+    
+    
+    std::unique_ptr<Drawable> svgScaleFront;
+    std::unique_ptr<Drawable> svgScaleBack;
     //[/UserVariables]
 
     //==============================================================================

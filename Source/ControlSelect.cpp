@@ -42,6 +42,7 @@ ControlSelect::ControlSelect ()
     addAndMakeVisible(box);
 
     comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> addItemList(midiChannelInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::CONTROL_CHANNEL] -> setLookAndFeel(&comboBoxLookAndFeel);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -74,7 +75,7 @@ void ControlSelect::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff3e4c54));
+    g.fillAll (ColorDefs::selectBG);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]

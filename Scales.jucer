@@ -9,6 +9,8 @@
               jucerFormatVersion="1" pluginVST3Category="Tools">
   <MAINGROUP id="UikYWG" name="Kitchen Scales">
     <GROUP id="{66881EAD-FDE3-3B6D-6EF8-49CB0999E9D0}" name="Source">
+      <FILE id="SIDen7" name="ColorDefs.cpp" compile="1" resource="0" file="Source/ColorDefs.cpp"/>
+      <FILE id="RDhjlw" name="ColorDefs.h" compile="0" resource="0" file="Source/ColorDefs.h"/>
       <FILE id="pwDtSs" name="TransposeInfo.cpp" compile="1" resource="0"
             file="Source/TransposeInfo.cpp"/>
       <FILE id="f2MGX1" name="TransposeInfo.h" compile="0" resource="0" file="Source/TransposeInfo.h"/>
@@ -47,8 +49,12 @@
       <FILE id="WqjQGY" name="TransposeSelect.cpp" compile="1" resource="0"
             file="Source/TransposeSelect.cpp"/>
     </GROUP>
-    <FILE id="Itqpyl" name="on_v2.svg" compile="0" resource="1" file="on_v2.svg"/>
-    <FILE id="Rwstqd" name="off_v2.svg" compile="0" resource="1" file="off_v2.svg"/>
+    <FILE id="CfE0E8" name="on_v2.svg" compile="0" resource="1" file="on_v2.svg"/>
+    <FILE id="ohSc8F" name="off_v2.svg" compile="0" resource="1" file="off_v2.svg"/>
+    <FILE id="LZTmB5" name="food-scale.svg" compile="0" resource="1" file="food-scale.svg"/>
+    <FILE id="HQyEpF" name="whisk.svg" compile="0" resource="1" file="whisk.svg"/>
+    <FILE id="t3C0gu" name="knife.svg" compile="0" resource="1" file="knife.svg"/>
+    <FILE id="fyRt9b" name="microwave.svg" compile="0" resource="1" file="microwave.svg"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

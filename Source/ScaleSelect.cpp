@@ -39,9 +39,11 @@ ScaleSelect::ScaleSelect ()
 
     noteTree = ValueTree(NoteInfo::getValueTree());
     comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
-
+    comboBoxes[comboBoxIndex::NOTE] -> setLookAndFeel(&comboBoxLookAndFeel);
+    
     scaleTree = ValueTree(ScaleInfo::getValueTree());
     comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::SCALE] -> setLookAndFeel(&comboBoxLookAndFeel);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;
     flexBox.flexDirection = FlexBox::Direction::row;
@@ -74,7 +76,7 @@ void ScaleSelect::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xff3e4c54));
+    g.fillAll (ColorDefs::selectBG);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
