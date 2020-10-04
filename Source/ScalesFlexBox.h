@@ -70,8 +70,8 @@ private:
     OwnedArray<Label> labels;
     
     
-    std::unique_ptr<Drawable> svgScaleFront;
-    std::unique_ptr<Drawable> svgScaleBack;
+    std::unique_ptr<Drawable> svgWhiskFront;
+    std::unique_ptr<Drawable> svgWhiskBack;
     //[/UserVariables]
 
     //==============================================================================

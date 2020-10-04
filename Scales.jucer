@@ -51,10 +51,7 @@
     </GROUP>
     <FILE id="CfE0E8" name="on_v2.svg" compile="0" resource="1" file="on_v2.svg"/>
     <FILE id="ohSc8F" name="off_v2.svg" compile="0" resource="1" file="off_v2.svg"/>
-    <FILE id="LZTmB5" name="food-scale.svg" compile="0" resource="1" file="food-scale.svg"/>
     <FILE id="HQyEpF" name="whisk.svg" compile="0" resource="1" file="whisk.svg"/>
-    <FILE id="t3C0gu" name="knife.svg" compile="0" resource="1" file="knife.svg"/>
-    <FILE id="fyRt9b" name="microwave.svg" compile="0" resource="1" file="microwave.svg"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

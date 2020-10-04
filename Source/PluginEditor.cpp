@@ -19,7 +19,7 @@ ScalesAudioProcessorEditor::ScalesAudioProcessorEditor (ScalesAudioProcessor& p,
     // editor's size to whatever you need it to be.
     flexBox.connectState(parameters);
     addAndMakeVisible(flexBox);
-    setSize (510, 340);
+    setSize (510, 370);
 }
 
 ScalesAudioProcessorEditor::~ScalesAudioProcessorEditor()

@@ -34,20 +34,17 @@ ScalesFlexBox::ScalesFlexBox ()
 
 
     //[UserPreSize]
-    auto panelMargin = FlexItem::Margin(30, 5, 5, 5);
+    auto topPanelMargin = FlexItem::Margin(30, 5, 5, 5);
+    auto panelMargin = FlexItem::Margin(40, 5, 5, 5);
     
-    auto scaleXml = XmlDocument::parse(BinaryData::foodscale_svg);
-    svgScaleFront = Drawable::createFromSVG(*scaleXml);
-    svgScaleFront -> replaceColour(Colours::black, Colour(0xfff7e1d7));
-    //svgScaleFront -> setBounds(100, 120, 0, 0);
-    //svgScaleFront -> setSize(100, 120);
-    svgScaleBack = Drawable::createFromSVG(*scaleXml);
-    svgScaleBack -> replaceColour(Colours::black, Colour(0xffedafb8));
+    auto scaleXml = XmlDocument::parse(BinaryData::whisk_svg);
+    svgWhiskFront = Drawable::createFromSVG(*scaleXml);
+    svgWhiskFront -> replaceColour(Colours::black, Colour(0xfff7e1d7));
+
+    svgWhiskBack = Drawable::createFromSVG(*scaleXml);
+    svgWhiskBack -> replaceColour(Colours::black, Colour(0xffedafb8));
     
-    //addAndMakeVisible(svgScaleFront.get());
-    
-    
-    flexBox.items.add(FlexItem(500, 50).withMargin(panelMargin));
+    flexBox.items.add(FlexItem(500, 50).withMargin(topPanelMargin));
     auto &flexItemScale = flexBox.items.getReference(flexBox.items.size() - 1);
     scaleSelect = new ScaleSelect();
     panels.add(scaleSelect);
@@ -106,7 +103,7 @@ ScalesFlexBox::ScalesFlexBox ()
     flexBox.flexWrap = FlexBox::Wrap::wrap;
     //[/UserPreSize]
 
-    setSize (510, 340);
+    setSize (510, 370);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -134,9 +131,9 @@ void ScalesFlexBox::paint (Graphics& g)
     g.fillAll (ColorDefs::windowBG);
 
     //[UserPaint] Add your own custom painting code here..
-    auto bounds = this -> getBounds().withTrimmedTop(10).withTrimmedBottom(10);
-    svgScaleBack -> drawWithin(g, bounds.withTrimmedLeft(5).toFloat(), RectanglePlacement::xMid + RectanglePlacement::yTop, 1.0f);
-    svgScaleFront -> drawWithin(g, bounds.withTrimmedRight(5).toFloat(), RectanglePlacement::xMid + RectanglePlacement::yTop, 1.0f);
+    auto bounds = this -> getBounds().withTrimmedTop(18).withTrimmedBottom(5);
+    svgWhiskBack -> drawWithin(g, bounds.withTrimmedLeft(5).toFloat(), RectanglePlacement::xMid + RectanglePlacement::yTop, 1.0f);
+    svgWhiskFront -> drawWithin(g, bounds.withTrimmedRight(5).toFloat(), RectanglePlacement::xMid + RectanglePlacement::yTop, 1.0f);
     //[/UserPaint]
 }
 
