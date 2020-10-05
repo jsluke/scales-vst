@@ -10,41 +10,51 @@
 
 #include "ScaleInfo.h"
 
-const Scale ScaleInfo::MAJOR = Scale(0, TRANS("Major"));
-const Scale ScaleInfo::MINOR = Scale(1, TRANS("Minor"));
-
-const Identifier ScaleInfo::scaleTreeID ("ScaleTree");
-const Identifier ScaleInfo::scaleID ("ScaleID");
+const Scale ScaleInfo::MAJOR     = Scale(0, TRANS("Major"));
+const Scale ScaleInfo::MINOR     = Scale(1, TRANS("Minor"));
+const Scale ScaleInfo::MINOR_H   = Scale(2, TRANS("Harmonic Minor"));
+const Scale ScaleInfo::DORIAN    = Scale(3, TRANS("Dorian"));
+const Scale ScaleInfo::BLUES_MIN = Scale(4, TRANS("Blues Minor"));
+const Scale ScaleInfo::BLUES_MAJ = Scale(5, TRANS("Blues Major"));
+const Scale ScaleInfo::WHOLE     = Scale(6, TRANS("Whole Tone"));
+const Scale ScaleInfo::MIN_PENT  = Scale(7, TRANS("Minor Pentatonic"));
+const Scale ScaleInfo::MAJ_PENT  = Scale(8, TRANS("Major Pentatonic"));
+const Scale ScaleInfo::SUPER_L   = Scale(9, TRANS("Super Locrian"));
 
 const String ScaleInfo::scaleParam = "ScaleParam";
 const String ScaleInfo::scaleParamText = TRANS("Scale Type");
 const int ScaleInfo::scaleParamDefault = 0;
 
-ValueTree ScaleInfo::getInitialValueTree()
-{
-    ValueTree tree = ValueTree(scaleTreeID);
-    tree.setProperty(scaleID, 0, nullptr);
-    return tree;
-}
-
-ValueTree& ScaleInfo::getValueTree()
-{
-    static ValueTree scaleTree = getInitialValueTree();
-    return scaleTree;
-}
-
 ScaleInfo::ScaleInfo()
 {
-    scaleOptions[MAJOR.order] = MAJOR;
-    scaleOptions[MINOR.order] = MINOR;
+    scaleOptions = getScales();
     initializeNoteSets();
+}
+
+std::vector<Scale> ScaleInfo::getScales()
+{
+    std::vector<Scale> val;
+    val.push_back(MAJOR);
+    val.push_back(MINOR);
+    val.push_back(MINOR_H);
+    val.push_back(DORIAN);
+    val.push_back(BLUES_MIN);
+    val.push_back(BLUES_MAJ);
+    val.push_back(WHOLE);
+    val.push_back(MIN_PENT);
+    val.push_back(MAJ_PENT);
+    val.push_back(SUPER_L);
+    
+    return val;
 }
 
 StringArray ScaleInfo::getStringArray()
 {
     StringArray options;
-    options.add(MAJOR.localizedString);
-    options.add(MINOR.localizedString);
+    for (Scale scale : getScales())
+    {
+        options.add(scale.localizedString);
+    }
     return options;
 }
 
@@ -86,6 +96,9 @@ int ScaleInfo::getNoteDown(int scaleID, int scaleNote, int note, bool getNoteUpN
 
 void ScaleInfo::initializeNoteSets()
 {
+    for (int i=0; i<scaleOptions.size(); i++)
+        noteSets.push_back(std::array<std::array<bool,NoteInfo::NUM_NOTES>,NoteInfo::NUM_NOTES>());
+    
     // initialize major scale
     for (int i=0; i<NoteInfo::NUM_NOTES; i++)
     {
@@ -108,5 +121,94 @@ void ScaleInfo::initializeNoteSets()
         noteSets[MINOR.order][i][(i+7) % NoteInfo::NUM_NOTES] = true;
         noteSets[MINOR.order][i][(i+8) % NoteInfo::NUM_NOTES] = true;
         noteSets[MINOR.order][i][(i+10) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize harmonic minor scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[MINOR_H.order][i][i] = true;
+        noteSets[MINOR_H.order][i][(i+2) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MINOR_H.order][i][(i+3) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MINOR_H.order][i][(i+5) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MINOR_H.order][i][(i+7) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MINOR_H.order][i][(i+8) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MINOR_H.order][i][(i+11) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize dorian scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[DORIAN.order][i][i] = true;
+        noteSets[DORIAN.order][i][(i+2) % NoteInfo::NUM_NOTES] = true;
+        noteSets[DORIAN.order][i][(i+3) % NoteInfo::NUM_NOTES] = true;
+        noteSets[DORIAN.order][i][(i+5) % NoteInfo::NUM_NOTES] = true;
+        noteSets[DORIAN.order][i][(i+7) % NoteInfo::NUM_NOTES] = true;
+        noteSets[DORIAN.order][i][(i+9) % NoteInfo::NUM_NOTES] = true;
+        noteSets[DORIAN.order][i][(i+10) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize blues minor scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[BLUES_MIN.order][i][i] = true;
+        noteSets[BLUES_MIN.order][i][(i+3) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MIN.order][i][(i+5) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MIN.order][i][(i+6) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MIN.order][i][(i+7) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MIN.order][i][(i+10) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize blues major scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[BLUES_MAJ.order][i][i] = true;
+        noteSets[BLUES_MAJ.order][i][(i+2) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+3) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+4) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+7) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+9) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize whole tone scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[BLUES_MAJ.order][i][i] = true;
+        noteSets[BLUES_MAJ.order][i][(i+2) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+4) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+6) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+8) % NoteInfo::NUM_NOTES] = true;
+        noteSets[BLUES_MAJ.order][i][(i+10) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize minor pentatonic scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[MIN_PENT.order][i][i] = true;
+        noteSets[MIN_PENT.order][i][(i+3) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MIN_PENT.order][i][(i+5) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MIN_PENT.order][i][(i+7) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MIN_PENT.order][i][(i+10) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize minor pentatonic scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[MAJ_PENT.order][i][i] = true;
+        noteSets[MAJ_PENT.order][i][(i+2) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MAJ_PENT.order][i][(i+4) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MAJ_PENT.order][i][(i+7) % NoteInfo::NUM_NOTES] = true;
+        noteSets[MAJ_PENT.order][i][(i+9) % NoteInfo::NUM_NOTES] = true;
+    }
+    
+    // initialize super locrian scale
+    for (int i=0; i<NoteInfo::NUM_NOTES; i++)
+    {
+        noteSets[SUPER_L.order][i][i] = true;
+        noteSets[SUPER_L.order][i][(i+1) % NoteInfo::NUM_NOTES] = true;
+        noteSets[SUPER_L.order][i][(i+3) % NoteInfo::NUM_NOTES] = true;
+        noteSets[SUPER_L.order][i][(i+4) % NoteInfo::NUM_NOTES] = true;
+        noteSets[SUPER_L.order][i][(i+6) % NoteInfo::NUM_NOTES] = true;
+        noteSets[SUPER_L.order][i][(i+8) % NoteInfo::NUM_NOTES] = true;
+        noteSets[SUPER_L.order][i][(i+10) % NoteInfo::NUM_NOTES] = true;
     }
 }

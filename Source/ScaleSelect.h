@@ -62,12 +62,6 @@ private:
 
     enum comboBoxIndex {NOTE, SCALE};
 
-    NoteInfo noteInfo;
-    ScaleInfo scaleInfo;
-
-    ValueTree noteTree;
-    ValueTree scaleTree;
-
     std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> noteAttachment;
     std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> scaleAttachment;
 

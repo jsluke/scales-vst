@@ -37,12 +37,10 @@ ScaleSelect::ScaleSelect ()
     initComboBox();
     initComboBox();
 
-    noteTree = ValueTree(NoteInfo::getValueTree());
-    comboBoxes[comboBoxIndex::NOTE] -> addItemList(noteInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::NOTE] -> addItemList(NoteInfo::getStringArray(), 1);
     comboBoxes[comboBoxIndex::NOTE] -> setLookAndFeel(&comboBoxLookAndFeel);
     
-    scaleTree = ValueTree(ScaleInfo::getValueTree());
-    comboBoxes[comboBoxIndex::SCALE] -> addItemList(scaleInfo.getStringArray(), 1);
+    comboBoxes[comboBoxIndex::SCALE] -> addItemList(ScaleInfo::getStringArray(), 1);
     comboBoxes[comboBoxIndex::SCALE] -> setLookAndFeel(&comboBoxLookAndFeel);
 
     flexBox.alignContent = FlexBox::AlignContent::flexStart;

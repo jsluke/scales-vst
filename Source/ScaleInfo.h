@@ -11,7 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include <array>
+#include <vector>
 
 #include "NoteInfo.h"
 
@@ -29,14 +29,18 @@ class ScaleInfo
 public:
     static const Scale MAJOR;
     static const Scale MINOR;
-    
-    static const Identifier scaleID;
+    static const Scale MINOR_H;
+    static const Scale DORIAN;
+    static const Scale BLUES_MIN;
+    static const Scale BLUES_MAJ;
+    static const Scale WHOLE;
+    static const Scale MIN_PENT;
+    static const Scale MAJ_PENT;
+    static const Scale SUPER_L;
     
     static const String scaleParam;
     static const String scaleParamText;
     static const int    scaleParamDefault;
-    
-    static ValueTree& getValueTree();
     
     static StringArray getStringArray();
     
@@ -47,11 +51,11 @@ public:
     int getNoteDown(int scaleID, int scaleNote, int note, bool getNoteUpNotFound);
     
 private:
-    static const Identifier scaleTreeID;
-    static ValueTree getInitialValueTree();
+    static std::vector<Scale> getScales();
     
-    std::array<Scale, 2> scaleOptions;
-    bool noteSets[2][NoteInfo::NUM_NOTES][NoteInfo::NUM_NOTES] = {0};
+    std::vector<Scale> scaleOptions;
+    //essentially bool[index to scale type][index to scale][index to "is this note within the scale?"]
+    std::vector<std::array<std::array<bool,NoteInfo::NUM_NOTES>,NoteInfo::NUM_NOTES>> noteSets;
     
     void initializeNoteSets();
 };
