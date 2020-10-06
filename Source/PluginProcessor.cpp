@@ -207,21 +207,11 @@ void ScalesAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
         {
             if (msg.isNoteOn())
             {
-                // TODO: edit value trees for scale and note
-                switch (NoteInfo::getOctave(msg.getNoteNumber()))
+                int octave = NoteInfo::getOctave(msg.getNoteNumber());
+                if (octave < scaleInfo.getScaleOptionsSize())
                 {
-                    case 3:
-                        *scaleTypeParam = ScaleInfo::MAJOR.order;
-                        *scaleNoteParam = NoteInfo::getNoteInOctave(msg.getNoteNumber());
-                        break;
-
-                    case 4:
-                        *scaleTypeParam = ScaleInfo::MINOR.order;
-                        *scaleNoteParam = NoteInfo::getNoteInOctave(msg.getNoteNumber());
-                        break;
-
-                    default:
-                        break;
+                    *scaleTypeParam = octave;
+                    *scaleNoteParam = NoteInfo::getNoteInOctave(msg.getNoteNumber());
                 }
             }
             // prevent infinite note on scenario caused by control channel

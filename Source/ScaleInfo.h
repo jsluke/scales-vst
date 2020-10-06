@@ -49,6 +49,7 @@ public:
     bool isNoteInScale(int scaleID, int scaleNote, int note);
     int getNoteUp(int scaleID, int scaleNote, int note, bool getNoteDownNotFound);
     int getNoteDown(int scaleID, int scaleNote, int note, bool getNoteUpNotFound);
+    unsigned long getScaleOptionsSize();
     
 private:
     static std::vector<Scale> getScales();

@@ -94,6 +94,11 @@ int ScaleInfo::getNoteDown(int scaleID, int scaleNote, int note, bool getNoteUpN
         return -1; // TODO: throw except?
 }
 
+unsigned long ScaleInfo::getScaleOptionsSize()
+{
+    return scaleOptions.size();
+}
+
 void ScaleInfo::initializeNoteSets()
 {
     for (int i=0; i<scaleOptions.size(); i++)

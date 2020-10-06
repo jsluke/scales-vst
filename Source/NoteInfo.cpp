@@ -47,7 +47,7 @@ StringArray NoteInfo::getStringArray()
 
 int NoteInfo::getOctave(int note)
 {
-    return (note / NUM_NOTES) - 2;
+    return note / NUM_NOTES;
 }
 
 int NoteInfo::getNoteInOctave(int note)
