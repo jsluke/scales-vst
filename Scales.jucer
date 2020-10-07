@@ -6,7 +6,7 @@
               pluginDesc="Align MIDI notes to specified scale" pluginCode="Scle"
               companyName="Substrate Instruments" companyWebsite="substrate.space"
               headerPath="../../Source" pluginName="Kitchen Scales" companyCopyright="Substrate Instruments"
-              jucerFormatVersion="1" pluginVST3Category="Tools">
+              jucerFormatVersion="1" pluginVST3Category="Tools" version="1.0.0">
   <MAINGROUP id="UikYWG" name="Kitchen Scales">
     <GROUP id="{66881EAD-FDE3-3B6D-6EF8-49CB0999E9D0}" name="Source">
       <FILE id="SIDen7" name="ColorDefs.cpp" compile="1" resource="0" file="Source/ColorDefs.cpp"/>
